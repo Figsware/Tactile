@@ -102,5 +102,24 @@ namespace Tactile
             }
         }
 
+        /// <summary>
+        /// Calculates the perimeter of a rect
+        /// </summary>
+        /// <param name="rect">The rect to calculate the perimeter of</param>
+        /// <returns>Calculated perimeter</returns>
+        public static float Perimeter(this Rect rect)
+        {
+            return 2 * (rect.height + rect.width);
+        }
+
+        /// <summary>
+        /// Calculates the area of a rect
+        /// </summary>
+        /// <param name="rect">The rect to calculate the area of</param>
+        /// <returns>Calculated area</returns>
+        public static float Area(this Rect rect)
+        {
+            return rect.width * rect.height;
+        }
     }
 }
