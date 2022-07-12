@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Tactile
 {
@@ -101,6 +102,57 @@ namespace Tactile
                 yield return coroutine;
             }
         }
+        
+        /// <summary>
+        /// A routine to refresh the layout at the end of the frame.
+        /// </summary>
+        public static IEnumerator RefreshLayoutAtEndOfFrameCoroutine(RectTransform rt, int depth = -1)
+        {
+            yield return new WaitForEndOfFrame();
+            RefreshLayout(rt, depth);
+        }
 
+        /// <summary>
+        /// A recursive method that updates the layout on all child transforms.
+        /// </summary>
+        /// <seealso href="https://forum.unity.com/threads/content-size-fitter-refresh-problem.498536/"/>
+        /// <param name="rt">The transform to update</param>
+        public static void RefreshLayout(RectTransform rt, int depth = -1)
+        {
+            // Base case: return when the RectTransform is null, is not
+            // active in the hierarchy, or depth is equal to zero.
+            if (!rt || !rt.gameObject.activeSelf || depth == 0)
+                return;
+
+            // Make recursive call to children.
+            foreach (RectTransform t in rt)
+                RefreshLayout(t, depth - 1);
+
+            // Update layouts.
+            var layoutGroup = rt.GetComponent<LayoutGroup>();
+            var contentSizeFitter = rt.GetComponent<ContentSizeFitter>();
+            if (layoutGroup != null)
+            {
+                layoutGroup.SetLayoutHorizontal();
+                layoutGroup.SetLayoutVertical();
+            }
+
+            if (contentSizeFitter != null)
+            {
+                LayoutRebuilder.ForceRebuildLayoutImmediate(rt);
+            }
+        }
+
+        /// <summary>
+        /// Refreshes a RectTransform layout at the end of the frame using a coroutine.
+        /// </summary>
+        /// <param name="executor">The executor of the refresh coroutine</param>
+        /// <param name="rt">RectTransform to update</param>
+        /// <param name="depth">Refresh depth</param>
+        /// <returns>The started refresh coroutine</returns>
+        public static Coroutine RefreshLayoutAtEndOfFrame(MonoBehaviour executor, RectTransform rt, int depth = -1)
+        {
+            return executor.StartCoroutine(RefreshLayoutAtEndOfFrameCoroutine(rt, depth));
+        }
     }
 }
