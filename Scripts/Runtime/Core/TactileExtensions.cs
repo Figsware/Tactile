@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Plastic.Antlr3.Runtime.Misc;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -24,23 +26,12 @@ namespace Tactile
                 Quaternion startRot = transform.localRotation;
                 Vector3 startScale = transform.localScale;
 
-                float elapsed = 0;
-                while (elapsed <= time)
+                yield return LinearLerpOverTimeCoroutine(time, t =>
                 {
-                    elapsed += Time.deltaTime;
-                    float t = elapsed / time;
-
-                    // Lerp the position and rotation based on how much time has elapsed.
                     transform.localPosition = slerp ? Vector3.Slerp(startPos, targetLocalPosition, t) : Vector3.Lerp(startPos, targetLocalPosition, t);
                     transform.localRotation = slerp ? Quaternion.Slerp(startRot, targetLocalRotation, t) : Quaternion.Lerp(startRot, targetLocalRotation, t);
                     transform.localScale = slerp ? Vector3.Slerp(startScale, targetLocalScale, t) : Vector3.Lerp(startScale, targetLocalScale, t);
-                    yield return null;
-                }
-
-                // Move the transform to the final position and orietnation.
-                transform.localPosition = targetLocalPosition;
-                transform.localRotation = targetLocalRotation;
-                transform.localScale = targetLocalScale;
+                });
             }
             else
             {
@@ -101,6 +92,42 @@ namespace Tactile
             {
                 yield return coroutine;
             }
+        }
+
+        /// <summary>
+        /// Performs an action over time using a linear lerp function.
+        /// </summary>
+        /// <param name="time">The time to perform the action</param>
+        /// <param name="action">The action to receive the linear lerp value</param>
+        public static IEnumerator LinearLerpOverTimeCoroutine(float time, Action<float> action)
+        {
+            yield return LerpFuncOverTimeCoroutine(time, elapsed => elapsed / time, action);
+        }
+
+        /// <summary>
+        /// Performs an action over time using a specified lerp function.
+        /// </summary>
+        /// <param name="time">The time to call the lerp function over</param>
+        /// <param name="lerpFunction">The function to calculate the lerp value based on the elapsed time.</param>
+        /// <param name="action">The action to receive the lerp value</param>
+        public static IEnumerator LerpFuncOverTimeCoroutine(float time, System.Func<float, float> lerpFunction, Action<float> action)
+        {
+            float elapsed = 0f;
+            while (elapsed <= time)
+            {
+                // Calculate lerp from lerp function.
+                float t = lerpFunction(elapsed);
+                
+                // Perform action using lerp.
+                action(t);
+                
+                // Wait extra frame and elapse time.
+                elapsed += Time.deltaTime;
+                yield return null;
+            }
+
+            // Give a lerp value of 1 so that it always finishes in a completed state.
+            action(1f);
         }
 
         public static void RefreshLayout(this RectTransform rt)
