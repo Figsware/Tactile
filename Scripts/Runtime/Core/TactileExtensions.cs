@@ -88,7 +88,7 @@ namespace Tactile
         /// <param name="executor"></param>
         /// <param name="enumerators"></param>
         /// <returns></returns>
-        public static IEnumerator WaitForAllCoroutine(this MonoBehaviour executor, IEnumerator[] enumerators)
+        public static IEnumerator WaitForAllCoroutine(this MonoBehaviour executor, params IEnumerator[] enumerators)
         {
             Coroutine[] coroutines = new Coroutine[enumerators.Length];
 
