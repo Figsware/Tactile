@@ -1,6 +1,6 @@
 {
   "name": "com.figsware.tactile",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "displayName": "Tactile",
   "description": "UI and Enhancements library developed by Figsware",
   "unity": "2019.1",
@@ -14,5 +14,12 @@
   "type": "library",
   "dependencies": {
     "com.unity.textmeshpro": "3.0.0"
-  }
+  },
+  "samples": [
+    {
+      "displayName": "Basic Elements",
+      "description": "Contains basic Tactile elements that can be used in your project.",
+      "path": "Samples~/TactileBasicElements"
+    }
+  ]
 }

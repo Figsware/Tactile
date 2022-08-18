@@ -1,0 +1,17 @@
+{
+    "name": "Tactile.BasicElements",
+    "rootNamespace": "",
+    "references": [
+        "GUID:cbbb58a2b0ae4cf4caaa516443f5a68e",
+        "GUID:6055be8ebefd69e48b49212b09b47b2f"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

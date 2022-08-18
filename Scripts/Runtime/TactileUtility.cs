@@ -1,13 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.Plastic.Antlr3.Runtime.Misc;
+using Tactile.UI;
+using UnityEditor.Graphs;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Tactile
 {
-    public static class TactileExtensions
+    public static class TactileUtility
     {
         /// <summary>
         /// Linearly lerps a transform to a specified position, orientation, and scale over a given time frame.
@@ -36,6 +37,16 @@ namespace Tactile
             else
             {
                 Debug.LogError("Tried to lerp a non-existent Transform!");
+            }
+        }
+
+        public static IEnumerator LinearScaleCoroutine(this Transform transform, Vector3 targetLocalScale, float time)
+        {
+            if (transform != null && transform)
+            {
+                Vector3 startScale = transform.localScale;
+                yield return LinearLerpOverTimeCoroutine(time,
+                    t => transform.localScale = Vector3.Lerp(startScale, targetLocalScale, t));
             }
         }
 
@@ -153,6 +164,15 @@ namespace Tactile
         public static Coroutine RefreshLayoutAtEndOfFrame(this RectTransform rt, MonoBehaviour executor)
         {
             return executor.StartCoroutine(RefreshLayoutAtEndOfFrameCoroutine(rt));
+        }
+
+        public static Color ChooseTextColorForBackgroundColor(this Color backgroundColor, Color lightTextColor, Color darkTextColor)
+        {
+            float r = backgroundColor.r;
+            float g = backgroundColor.g;
+            float b = backgroundColor.b;
+            bool useDarkColor = r * 0.299f + g * 0.587f + b * 0.114f > 186;
+            return useDarkColor ? darkTextColor : lightTextColor;
         }
     }
 }
