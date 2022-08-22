@@ -1,4 +1,7 @@
-﻿using Tactile.UI;
+﻿using System;
+using System.Linq;
+using System.Reflection;
+using Tactile.UI;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -8,5 +11,6 @@ namespace Tactile
     public class TactileConfigurationData : ScriptableObject
     {
         public InfoCard infoCard;
+        public KeyValuePair<UnityEngine.Object>[] templateItems;
     }
 }
