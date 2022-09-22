@@ -37,7 +37,21 @@ namespace Tactile.Utility
             while (!_cancelled && coroutine.MoveNext())
                 yield return coroutine.Current;
         }
-        
+
+        /// <summary>
+        /// Waits for a set amount of time or until the token cancels.
+        /// </summary>
+        /// <param name="time">The time to wait for.</param>
+        public IEnumerator WaitForTimeOrUntilCancelledCoroutine(float time)
+        {
+            float elapsed = 0;
+            while (!_cancelled && elapsed <= time)
+            {
+                elapsed += Time.deltaTime;
+                yield return null;
+            }
+        }
+
         /// <summary>
         /// Allows the token to be used as a bool in an expression. It will return true if the token has not been
         /// cancelled yet (so that you can do something like while token ...), and false otherwise. Furthermore, if the
