@@ -34,8 +34,23 @@ namespace Tactile.Utility
         /// <param name="coroutine">The coroutine to execute</param>
         public IEnumerator DoUntilCancelledCoroutine(IEnumerator coroutine)
         {
-            while (!_cancelled && coroutine.MoveNext())
-                yield return coroutine.Current;
+            IEnumerator flattened = coroutine.FlattenCoroutine();
+            while (!_cancelled && flattened.MoveNext())
+                yield return flattened.Current;
+        }
+
+        /// <summary>
+        /// Executes all remaining steps within a single frame by ignoring "yield return null".
+        /// </summary>
+        /// <param name="coroutine">The coroutine to wrap</param>
+        public IEnumerator SkipNullIfCancelledCoroutine(IEnumerator coroutine)
+        {
+            IEnumerator flattened = coroutine.FlattenCoroutine();
+            while (!_cancelled && flattened.MoveNext())
+                yield return flattened.Current;
+
+            // Execute all remaining steps now.
+            while (flattened.MoveNext()) { }
         }
 
         /// <summary>

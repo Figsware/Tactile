@@ -88,21 +88,63 @@ namespace Tactile
         /// <summary>
         /// Waits for multiple coroutines to execute.
         /// </summary>
-        /// <param name="executor"></param>
-        /// <param name="enumerators"></param>
+        /// <param name="enumerators">The coroutines to execute simultaneously</param>
         /// <returns></returns>
-        public static IEnumerator WaitForAllCoroutine(this MonoBehaviour executor, params IEnumerator[] enumerators)
+        public static IEnumerator WaitForAllCoroutine(params IEnumerator[] enumerators)
         {
-            Coroutine[] coroutines = new Coroutine[enumerators.Length];
-
-            for (int i = 0; i < enumerators.Length; i++)
+            bool allDone = false;
+            IEnumerator[] flattenedCoroutines = new IEnumerator[enumerators.Length];
+            bool[] routineProgress = new bool[enumerators.Length];
+           
+            // Flatten coroutines
+            for (int i = 0; i < flattenedCoroutines.Length; i++)
+                flattenedCoroutines[i] = FlattenCoroutine(enumerators[i]);
+            
+            while (!allDone)
             {
-                coroutines[i] = executor.StartCoroutine(enumerators[i]);
+                allDone = true;
+                for (var i = 0; i < flattenedCoroutines.Length; i++)
+                {
+                    var e = flattenedCoroutines[i];
+                    
+                    // If the coroutine isn't already done, execute it and check whether it is done (MoveNext returns false).
+                    if (!routineProgress[i])
+                        routineProgress[i] = !e.MoveNext();
+                    
+                    allDone = allDone && routineProgress[i];
+                }
+
+                yield return null;
             }
+        }
 
-            foreach (Coroutine coroutine in coroutines)
+        /// <summary>
+        /// "Flattens" a coroutine by stepping through the provided coroutine and any nested coroutines.
+        /// </summary>
+        /// <param name="coroutine">The coroutine to flatten</param>
+        public static IEnumerator FlattenCoroutine(this IEnumerator coroutine)
+        {
+            Stack<IEnumerator> coroutines = new();
+            coroutines.Push(coroutine);
+
+            while (coroutines.Count > 0)
             {
-                yield return coroutine;
+                IEnumerator c = coroutines.Peek();
+                bool done = c.MoveNext();
+                object current = c.Current;
+                
+                if (done)
+                {
+                    coroutines.Pop();
+                } 
+                else if (current is IEnumerator nestedC)
+                {
+                    coroutines.Push(nestedC);
+                }
+                else
+                {
+                    yield return current;
+                }
             }
         }
 
