@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Tactile.UI;
+using Tactile.Utility;
 using UnityEditor.Graphs;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,7 +19,7 @@ namespace Tactile
         /// <param name="targetLocalRotation">The target location rotation</param>
         /// <param name="targetLocalScale">The target scale</param>
         /// <param name="time">The time to translate</param>
-        public static IEnumerator LocallyLerpToCoroutine(this Transform transform, Vector3 targetLocalPosition, Quaternion targetLocalRotation, Vector3 targetLocalScale, float time, bool slerp = false)
+        public static IEnumerator LocallyLerpToCoroutine(this Transform transform, Vector3 targetLocalPosition, Quaternion targetLocalRotation, Vector3 targetLocalScale, float time, bool slerp = false, CancelToken token = null)
         {
             if (transform != null && transform)
             {
@@ -32,7 +33,7 @@ namespace Tactile
                     transform.localPosition = slerp ? Vector3.Slerp(startPos, targetLocalPosition, t) : Vector3.Lerp(startPos, targetLocalPosition, t);
                     transform.localRotation = slerp ? Quaternion.Slerp(startRot, targetLocalRotation, t) : Quaternion.Lerp(startRot, targetLocalRotation, t);
                     transform.localScale = slerp ? Vector3.Slerp(startScale, targetLocalScale, t) : Vector3.Lerp(startScale, targetLocalScale, t);
-                });
+                }, token);
             }
             else
             {
@@ -40,13 +41,13 @@ namespace Tactile
             }
         }
 
-        public static IEnumerator LinearScaleCoroutine(this Transform transform, Vector3 targetLocalScale, float time)
+        public static IEnumerator LinearScaleCoroutine(this Transform transform, Vector3 targetLocalScale, float time, CancelToken token = null)
         {
             if (transform != null && transform)
             {
                 Vector3 startScale = transform.localScale;
                 yield return LinearLerpOverTimeCoroutine(time,
-                    t => transform.localScale = Vector3.Lerp(startScale, targetLocalScale, t));
+                    t => transform.localScale = Vector3.Lerp(startScale, targetLocalScale, t), token);
             }
         }
 
@@ -56,14 +57,14 @@ namespace Tactile
         /// <param name="transform"></param>
         /// <param name="time"></param>
         /// <returns></returns>
-        public static IEnumerator ScaleToAppearCoroutine(this Transform transform, float time)
+        public static IEnumerator ScaleToAppearCoroutine(this Transform transform, float time, CancelToken token = null)
         {
             Vector3 startingScale = transform.localScale;
             transform.localScale = new Vector3(0.01f, 0.01f, 0.01f);
             transform.gameObject.SetActive(true);
 
             // Perform the scale.
-            yield return transform.LocallyLerpToCoroutine(transform.localPosition, transform.localRotation, startingScale, time, true);
+            yield return transform.LocallyLerpToCoroutine(transform.localPosition, transform.localRotation, startingScale, time, true, token);
         }
 
         /// <summary>
@@ -72,12 +73,12 @@ namespace Tactile
         /// <param name="transform"></param>
         /// <param name="time"></param>
         /// <returns></returns>
-        public static IEnumerator ScaleToDisappearCoroutine(this Transform transform, float time)
+        public static IEnumerator ScaleToDisappearCoroutine(this Transform transform, float time, CancelToken token = null)
         {
             Vector3 startingScale = transform.localScale;
 
             // Perform the scale.
-            yield return transform.LocallyLerpToCoroutine(transform.localPosition, transform.localRotation, Vector3.zero, time, true);
+            yield return transform.LocallyLerpToCoroutine(transform.localPosition, transform.localRotation, Vector3.zero, time, true, token);
 
             // Disable the game object and reset its scale.
             transform.gameObject.SetActive(false);
@@ -110,9 +111,9 @@ namespace Tactile
         /// </summary>
         /// <param name="time">The time to perform the action</param>
         /// <param name="action">The action to receive the linear lerp value</param>
-        public static IEnumerator LinearLerpOverTimeCoroutine(float time, Action<float> action)
+        public static IEnumerator LinearLerpOverTimeCoroutine(float time, Action<float> action, CancelToken token = null)
         {
-            yield return LerpFuncOverTimeCoroutine(time, elapsed => elapsed / time, action);
+            yield return LerpFuncOverTimeCoroutine(time, elapsed => elapsed / time, action, token);
         }
 
         /// <summary>
@@ -121,10 +122,10 @@ namespace Tactile
         /// <param name="time">The time to call the lerp function over</param>
         /// <param name="lerpFunction">The function to calculate the lerp value based on the elapsed time.</param>
         /// <param name="action">The action to receive the lerp value</param>
-        public static IEnumerator LerpFuncOverTimeCoroutine(float time, System.Func<float, float> lerpFunction, Action<float> action)
+        public static IEnumerator LerpFuncOverTimeCoroutine(float time, Func<float, float> lerpFunction, Action<float> action, CancelToken token = null)
         {
             float elapsed = 0f;
-            while (elapsed <= time)
+            while (token && elapsed <= time)
             {
                 // Calculate lerp from lerp function.
                 float t = lerpFunction(elapsed);
