@@ -130,7 +130,7 @@ namespace Tactile
             while (coroutines.Count > 0)
             {
                 IEnumerator c = coroutines.Peek();
-                bool done = c.MoveNext();
+                bool done = !c.MoveNext();
                 object current = c.Current;
                 
                 if (done)
