@@ -124,7 +124,7 @@ namespace Tactile
         /// <param name="coroutine">The coroutine to flatten</param>
         public static IEnumerator FlattenCoroutine(this IEnumerator coroutine)
         {
-            Stack<IEnumerator> coroutines = new();
+            Stack<IEnumerator> coroutines = new Stack<IEnumerator>();
             coroutines.Push(coroutine);
 
             while (coroutines.Count > 0)

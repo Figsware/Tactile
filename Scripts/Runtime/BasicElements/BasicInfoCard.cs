@@ -38,7 +38,7 @@ namespace Tactile.BasicElements
         [SerializeField] private Transform cardTransform;
 
         private static Vector3 OpenScale => Vector3.one;
-        private static Vector3 ClosedScale => new(0f, 1f, 1f);
+        private static Vector3 ClosedScale => new Vector3(0f, 1f, 1f);
 
         public override Color Color
         {
