@@ -1,6 +1,5 @@
 ﻿using Tactile.UI;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Tactile
 {
