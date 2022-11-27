@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
 using UnityEngine;
-using TMPro;
+using UnityEngine.Events;
 
 namespace Tactile.Tools
 {
@@ -10,27 +10,20 @@ namespace Tactile.Tools
     public class DigitalClock : MonoBehaviour
     {
         /// <summary>
-        /// The label to display the time.
+        /// An event that is triggered when there is new clock text.
         /// </summary>
-        public TextMeshProUGUI clockLabel;
+        public UnityEvent<string> onNewClockText;
 
         /// <summary>
         /// The format to display the time.
         /// </summary>
         public string timeFormat = "h:mm tt";
 
-        private void Awake()
-        {
-            Debug.Assert(clockLabel, "Clock label is missing!");
-        }
-
         // Update is called once per frame
         void Update()
         {
             DateTime now = DateTime.Now;
-
-            if (clockLabel)
-                clockLabel.text = now.ToString(timeFormat);
+            onNewClockText.Invoke(now.ToString(timeFormat));
         }
     }
 }

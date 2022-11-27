@@ -1,6 +1,6 @@
 {
     "name": "Tactile.Editor",
-    "rootNamespace": "",
+    "rootNamespace": "Tactile",
     "references": [
         "GUID:cbbb58a2b0ae4cf4caaa516443f5a68e"
     ],
