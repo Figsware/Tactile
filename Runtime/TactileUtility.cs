@@ -49,6 +49,47 @@ namespace Tactile
                 Debug.LogError("Tried to lerp a non-existent Transform!");
             }
         }
+        
+        /// <summary>
+        /// Linearly lerps a transform to a specified position, orientation, and scale over a given time frame.
+        /// </summary>
+        /// <param name="transform">The transform to manipulate</param>
+        /// <param name="targetPosition">The target location position</param>
+        /// <param name="targetRotation">The target location rotation</param>
+        /// <param name="targetLocalScale">The target scale</param>
+        /// <param name="time">The time to translate</param>
+        public static IEnumerator LerpToCoroutine(this Transform transform, Vector3 targetPosition,
+            Quaternion targetRotation, Vector3 targetLocalScale, float time, bool slerp = false,
+            CancelToken token = null)
+        {
+            if (transform != null && transform)
+            {
+                // Store starting position and orientation.
+                Vector3 startPos = transform.position;
+                Quaternion startRot = transform.rotation;
+                Vector3 startScale = transform.localScale;
+
+                yield return LinearLerpOverTimeCoroutine(time, t =>
+                {
+                    transform.position =
+                        slerp
+                            ? Vector3.Slerp(startPos, targetPosition, t)
+                            : Vector3.Lerp(startPos, targetPosition, t);
+                    transform.rotation =
+                        slerp
+                            ? Quaternion.Slerp(startRot, targetRotation, t)
+                            : Quaternion.Lerp(startRot, targetRotation, t);
+                    transform.localScale =
+                        slerp
+                            ? Vector3.Slerp(startScale, targetLocalScale, t)
+                            : Vector3.Lerp(startScale, targetLocalScale, t);
+                }, token);
+            }
+            else
+            {
+                Debug.LogError("Tried to lerp a non-existent Transform!");
+            }
+        }
 
         public static IEnumerator LinearScaleCoroutine(this Transform transform, Vector3 targetLocalScale, float time,
             CancelToken token = null)
