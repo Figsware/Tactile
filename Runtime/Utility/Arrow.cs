@@ -12,6 +12,9 @@ namespace Tactile.Utility
     /// </summary>
     public class Arrow : MonoBehaviour
     {
+        [Tooltip("The transform to manipulate. If unspecified, this GameObject's transform is used instead.")]
+        [SerializeField] private Transform arrowTransform;
+        
         [Header("Target")]
         [Tooltip("The position relative to the parent transform to point at.")]
         [SerializeField] private Vector3 targetPosition;
@@ -84,6 +87,12 @@ namespace Tactile.Utility
             }
         }
 
+        public Transform ArrowTransform
+        {
+            get => arrowTransform ? arrowTransform : transform;
+            set => arrowTransform = value;
+        }
+
         private Vector3 _startPos;
         private Vector3 _endPos;
 
@@ -110,10 +119,11 @@ namespace Tactile.Utility
         {
             while (true)
             {
+                Transform currentArrowTransform = ArrowTransform;
                 float t = motionCurve.Evaluate(Time.time * curveRate);
                 Vector3 newPos = Vector3.Lerp(_startPos, _endPos, t);
-                transform.localPosition = newPos;
-                transform.localRotation = approachRotation;
+                currentArrowTransform.localPosition = newPos;
+                currentArrowTransform.localRotation = approachRotation;
 
                 yield return null;
             }
@@ -126,9 +136,9 @@ namespace Tactile.Utility
 
         private void OnDrawGizmosSelected()
         {
-            if (transform.parent)
+            if (ArrowTransform.parent)
             {
-                Gizmos.matrix = transform.parent.localToWorldMatrix;
+                Gizmos.matrix = ArrowTransform.parent.localToWorldMatrix;
             }
 
             float sphereSize = 0.05f;
