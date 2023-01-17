@@ -98,6 +98,7 @@ namespace Tactile.Utility
 
         private void Start()
         {
+            CalculateStartAndEndPositions();
             StartCoroutine(MoveArrowCoroutine());
         }
 
