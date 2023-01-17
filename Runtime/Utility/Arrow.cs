@@ -119,19 +119,25 @@ namespace Tactile.Utility
         {
             while (true)
             {
-                Transform currentArrowTransform = ArrowTransform;
                 float t = motionCurve.Evaluate(Time.time * curveRate);
-                Vector3 newPos = Vector3.Lerp(_startPos, _endPos, t);
-                currentArrowTransform.localPosition = newPos;
-                currentArrowTransform.localRotation = approachRotation;
-
+                SetArrowPosition(t);
+                
                 yield return null;
             }
+        }
+
+        private void SetArrowPosition(float t)
+        {
+            Transform currentArrowTransform = ArrowTransform;
+            Vector3 newPos = Vector3.Lerp(_startPos, _endPos, t);
+            currentArrowTransform.localPosition = newPos;
+            currentArrowTransform.localRotation = approachRotation;
         }
 
         private void OnValidate()
         {
             CalculateStartAndEndPositions();
+            SetArrowPosition(1f);
         }
 
         private void OnDrawGizmosSelected()
