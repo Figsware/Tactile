@@ -1,6 +1,6 @@
 ﻿namespace Tactile.UI
 {
-    public class Surface : View
+    public class Test
     {
         
     }
