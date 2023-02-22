@@ -1,0 +1,17 @@
+{
+    "name": "Tactile.XR",
+    "rootNamespace": "Tactile",
+    "references": [
+        "GUID:cbbb58a2b0ae4cf4caaa516443f5a68e",
+        "GUID:e40ba710768534012815d3193fa296cb"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

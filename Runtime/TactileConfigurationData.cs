@@ -1,4 +1,5 @@
 ﻿using Tactile.UI;
+using Tactile.Utility;
 using UnityEngine;
 
 namespace Tactile
@@ -7,5 +8,6 @@ namespace Tactile
     public class TactileConfigurationData : ScriptableObject
     {
         public InfoCard infoCard;
+        public Arrow arrow;
     }
 }

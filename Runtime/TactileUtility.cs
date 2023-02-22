@@ -365,5 +365,14 @@ namespace Tactile
         {
             return Orientation.WorldFromTransform(transform);
         }
+
+        public static Texture2D CreateSolidColorTexture(Color color)
+        {
+            Texture2D texture = new Texture2D(1, 1);
+            texture.SetPixel(0, 0, color);
+            texture.Apply();
+
+            return texture;
+        }
     }
 }
