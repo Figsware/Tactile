@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.Events;
 
 namespace Tactile.UI.Navigation
@@ -12,9 +13,7 @@ namespace Tactile.UI.Navigation
 
         public UnityEvent<IScreen> onHideScreen;
         public UnityEvent<IScreen> onNewScreen;
-        public IScreen[] Screens => ScreenObjects;
-
-        private Screen[] ScreenObjects => (screenParent ? screenParent : gameObject).GetComponentsInChildren<Screen>(true);
+        public IScreen[] Screens => GetScreens();
         private Screen currentScreen = null;
 
         private void Awake()
@@ -34,22 +33,26 @@ namespace Tactile.UI.Navigation
 
         public void ShowScreen(string key)
         {
-            for (int i = 0; i < ScreenObjects.Length; i++)
+            var screens = GetScreens();
+            for (int i = 0; i < screens.Length; i++)
             {
-                var screen = ScreenObjects[i];
+                var screen = screens[i];
                 if (screen.key == key)
                 {
                     ShowScreen(i);
                     break;
                 }
             }
+            
+            Debug.LogError($"Tried to show a screen with the key \"{key}\" that doesn't exist!", this);
         }
 
         public void ShowScreen(int newScreenIndex)
         {
-            if (0 <= newScreenIndex && newScreenIndex < ScreenObjects.Length)
+            var screens = GetScreens();
+            if (0 <= newScreenIndex && newScreenIndex < screens.Length)
             {
-                foreach (var screen in ScreenObjects)
+                foreach (var screen in screens)
                 {
                     screen.gameObject.SetActive(false);
                     
@@ -64,16 +67,36 @@ namespace Tactile.UI.Navigation
                 }
 
                 currentScreenIndex = newScreenIndex;
-                currentScreen = ScreenObjects[currentScreenIndex];
+                currentScreen = screens[currentScreenIndex];
                 currentScreen.gameObject.SetActive(true);
                 currentScreen.onAppear.Invoke();
                 onNewScreen.Invoke(currentScreen);
+            }
+            else
+            {
+                Debug.LogError($"Tried to show a screen with index {newScreenIndex} that doesn't exist!", this);
             }
         }
 
         private void SetScreenFromCurrentIndex()
         {
             ShowScreen(currentScreenIndex);
+        }
+
+        private Screen[] GetScreens()
+        {
+            var parent = screenParent ? screenParent : gameObject;
+            List<Screen> screens = new List<Screen>();
+            for (int i = 0; i < parent.transform.childCount; i++)
+            {
+                var child = parent.transform.GetChild(i);
+                if (child.GetComponent<Screen>() is { } screen)
+                {
+                    screens.Add(screen);
+                }
+            }
+
+            return screens.ToArray();
         }
     }
 }
