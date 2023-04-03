@@ -40,7 +40,7 @@ namespace Tactile.UI.Navigation
                 if (screen.key == key)
                 {
                     ShowScreen(i);
-                    break;
+                    return;
                 }
             }
             

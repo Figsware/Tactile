@@ -9,6 +9,7 @@ namespace Tactile.XR
     /// The XRManager allows you to enable and disable XR within the scene. This is useful if you would like to manually
     /// control when to enable XR, such as for implementing a toggle between a desktop and XR mode.
     /// </summary>
+    [AddComponentMenu("Tactile/XR/XR Manager")]
     public class XRManager : MonoBehaviour
     {
         [Tooltip("Whether XR is currently enabled.")]
@@ -29,7 +30,7 @@ namespace Tactile.XR
         /// A coroutine to enable the XR loader. Borrowed from Unity documentation.
         /// </summary>
         /// <seealso href="https://docs.unity3d.com/Packages/com.unity.xr.management@4.2/manual/EndUser.html"/>
-        public static IEnumerator StartXRCoroutine()
+        public IEnumerator StartXRCoroutine()
         {
             Debug.Log("Initializing XR...");
 
@@ -47,6 +48,7 @@ namespace Tactile.XR
             {
                 Debug.Log("Starting XR...");
                 XRGeneralSettings.Instance.Manager.StartSubsystems();
+                OnXREnabled.Invoke();
             }
         }
 
@@ -54,7 +56,7 @@ namespace Tactile.XR
         /// Stops any XR loader. Borrowed from Unity documentation.
         /// </summary>
         /// <seealso href="https://docs.unity3d.com/Packages/com.unity.xr.management@4.2/manual/EndUser.html"/>
-        public static void StopXR()
+        public void StopXR()
         {
             if (XRGeneralSettings.Instance.Manager.activeLoader != null)
             {
@@ -63,6 +65,7 @@ namespace Tactile.XR
                 XRGeneralSettings.Instance.Manager.StopSubsystems();
                 XRGeneralSettings.Instance.Manager.DeinitializeLoader();
                 Debug.Log("XR stopped completely.");
+                OnXRDisabled.Invoke();
             }
             else
             {
