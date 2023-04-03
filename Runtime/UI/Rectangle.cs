@@ -6,12 +6,27 @@ using UnityEngine.UIElements;
 
 namespace Tactile.UI
 {
+
+    /// <summary>
+    /// A rectangle that can have each of its corners curved. A number of corner vertices can be specified to increase
+    /// the resolution of the corners.
+    /// </summary>
     [RequireComponent(typeof(CanvasRenderer))]
     [ExecuteInEditMode]
     public class Rectangle : Graphic
     {
         [SerializeField, Min(2)] private int cornerVertices = 3;
         [SerializeField] private CornerSizes corners;
+
+        public CornerSizes Corners
+        {
+            get => corners;
+            set
+            {
+                corners = value;
+                SetVerticesDirty();
+            }
+        }
         
         protected readonly static Dictionary<int, (Vector2[], int[])> CornerCache = new Dictionary<int, (Vector2[], int[])>();
         protected static readonly (bool, bool) TopLeftCorner = (false, true);
