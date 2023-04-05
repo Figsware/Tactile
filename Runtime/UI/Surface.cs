@@ -89,7 +89,7 @@ namespace Tactile.UI
             }
             
             // Add center vert
-            cornerVertices[^1] = Vector3.one.normalized;
+            cornerVertices[cornerVertices.Length - 1] = Vector3.one.normalized;
             
             // Create triangles
             List<int> triangles = new List<int>();
