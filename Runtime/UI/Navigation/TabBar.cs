@@ -26,15 +26,7 @@ namespace Tactile.UI.Navigation
             CreateTabs();
             SelectTab(manager.CurrentScreenIndex);
         }
-
-        private void OnValidate()
-        {
-            if (!Application.isPlaying)
-                return;
-            
-            CreateTabs();
-        }
-
+        
         private void SelectTab(int index)
         {
             if (0 <= index && index < _tabButtons.Length)
