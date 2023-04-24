@@ -21,6 +21,7 @@ namespace Tactile.UI.Navigation
             _logger = new Logger(this);
             manager.onNewScreenIndex.AddListener(SelectTab);
             _prevScreenIndex = manager.CurrentScreenIndex;
+            SelectTab(manager.CurrentScreenIndex);
         }
 
         private void OnValidate()
