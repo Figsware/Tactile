@@ -6,6 +6,6 @@ namespace Tactile.UI
     {
         public string Title { get; }
         public string Key { get; }
-        public Texture2D Icon { get; }
+        public Texture Icon { get; }
     }
 }

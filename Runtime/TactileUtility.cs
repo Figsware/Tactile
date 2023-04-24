@@ -374,5 +374,38 @@ namespace Tactile
 
             return texture;
         }
+
+        /// <summary>
+        /// no survivors
+        /// </summary>
+        /// <param name="transform">The transform whose children will be destroyed</param>
+        public static void DestroyAllChildren(this Transform transform)
+        {
+            int totalChildren = transform.childCount;
+            for (int i = 0; i < totalChildren; i++)
+            {
+                var child = transform.GetChild(i).gameObject;
+                GameObject.Destroy(child);
+            }
+        }
+
+        public static void DestroyAllChildren(this GameObject gameObject) {
+            gameObject.transform.DestroyAllChildren();
+        }
+
+        public static T[] GetComponentsInDirectChildren<T>(this GameObject gameObject, bool includeInactive = false) where T: MonoBehaviour
+        {
+            List<T> components = new List<T>();
+            for (int i = 0; i < gameObject.transform.childCount; i++)
+            {
+                var child = gameObject.transform.GetChild(i).gameObject;
+                if (child.GetComponent<T>() is { } component && (includeInactive || child.activeSelf))
+                {
+                    components.Add(component);
+                }
+            }
+
+            return components.ToArray();
+        }
     }
 }

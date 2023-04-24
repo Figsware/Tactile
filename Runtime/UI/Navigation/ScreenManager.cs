@@ -11,10 +11,12 @@ namespace Tactile.UI.Navigation
         [SerializeField] private bool stopCoroutinesOnHide = true;
         [SerializeField] private int currentScreenIndex;
 
-        public UnityEvent<IScreen> onHideScreen;
-        public UnityEvent<IScreen> onNewScreen;
+        public UnityEvent<int> onNewScreenIndex;
+
+        public int CurrentScreenIndex => currentScreenIndex;
+        
         public IScreen[] Screens => GetScreens();
-        private Screen currentScreen = null;
+        private Screen _currentScreen = null;
 
         private void Awake()
         {
@@ -37,7 +39,7 @@ namespace Tactile.UI.Navigation
             for (int i = 0; i < screens.Length; i++)
             {
                 var screen = screens[i];
-                if (screen.key == key)
+                if (screen.Key == key)
                 {
                     ShowScreen(i);
                     return;
@@ -56,21 +58,20 @@ namespace Tactile.UI.Navigation
                 {
                     screen.gameObject.SetActive(false);
                     
-                    if (screen == currentScreen)
+                    if (screen == _currentScreen)
                     {
                         if (stopCoroutinesOnHide)
-                            currentScreen.StopAllCoroutines();
-                    
-                        onHideScreen.Invoke(screen);
-                        currentScreen.onDisappear.Invoke();
+                            _currentScreen.StopAllCoroutines();
+                        
+                        _currentScreen.onDisappear.Invoke();
                     }
                 }
 
                 currentScreenIndex = newScreenIndex;
-                currentScreen = screens[currentScreenIndex];
-                currentScreen.gameObject.SetActive(true);
-                currentScreen.onAppear.Invoke();
-                onNewScreen.Invoke(currentScreen);
+                _currentScreen = screens[currentScreenIndex];
+                _currentScreen.gameObject.SetActive(true);
+                _currentScreen.onAppear.Invoke();
+                onNewScreenIndex.Invoke(currentScreenIndex);
             }
             else
             {
