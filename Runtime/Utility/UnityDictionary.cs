@@ -13,7 +13,7 @@ namespace Tactile.Utility
     /// <typeparam name="TKey"></typeparam>
     /// <typeparam name="TValue"></typeparam>
     [Serializable]
-    public class UnityDictionary<TKey, TValue> : IDictionary<TKey, TValue>, ISerializationCallbackReceiver, IUnityDictionary
+    public class UnityDictionary<TKey, TValue> : IDictionary<TKey, TValue>, IReadOnlyDictionary<TKey, TValue>, ISerializationCallbackReceiver, IUnityDictionary
     {
         [SerializeField] private DictionaryItem[] items;
 
@@ -47,6 +47,11 @@ namespace Tactile.Utility
             get => GetDictionary()[key];
             set => GetDictionary()[key] = value;
         }
+
+        IEnumerable<TKey> IReadOnlyDictionary<TKey, TValue>.Keys => Keys;
+
+        IEnumerable<TValue> IReadOnlyDictionary<TKey, TValue>.Values => Values;
+
         public ICollection<TKey> Keys => GetDictionary().Keys;
         public ICollection<TValue> Values => GetDictionary().Values;
 

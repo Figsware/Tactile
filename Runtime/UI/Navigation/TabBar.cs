@@ -1,5 +1,4 @@
 ﻿using System;
-using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -22,11 +21,16 @@ namespace Tactile.UI.Navigation
             _logger = new Logger(this);
             manager.onNewScreenIndex.AddListener(SelectTab);
             _prevScreenIndex = manager.CurrentScreenIndex;
+        }
+
+        private void OnValidate()
+        {
+            if (!Application.isPlaying)
+                return;
             
             CreateTabs();
-            SelectTab(manager.CurrentScreenIndex);
         }
-        
+
         private void SelectTab(int index)
         {
             if (0 <= index && index < _tabButtons.Length)
