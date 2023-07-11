@@ -16,9 +16,9 @@ namespace Tactile.UI
     public class Rectangle : Graphic
     {
         [SerializeField, Min(2)] private int cornerVertices = 3;
-        [SerializeField] private CornerSizes corners;
+        [SerializeField] private CornerRadii corners;
 
-        public CornerSizes Corners
+        public CornerRadii Corners
         {
             get => corners;
             set
@@ -176,7 +176,7 @@ namespace Tactile.UI
         }
 
         [Serializable]
-        public struct CornerSizes
+        public struct CornerRadii
         {
             public float topLeft;
             public float topRight;

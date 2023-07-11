@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using Tactile.Utility;
 using UnityEngine;
 using UnityEngine.UI;
@@ -406,6 +407,20 @@ namespace Tactile
             }
 
             return components.ToArray();
+        }
+
+        public static Texture2D TextureFromPNG(string filePath)
+        {
+            Texture2D tex = null;
+
+            if (File.Exists(filePath))
+            {
+                var data = File.ReadAllBytes(filePath);
+                tex = new Texture2D(1, 1);
+                tex.LoadImage(data);
+            }
+
+            return tex;
         }
     }
 }

@@ -62,14 +62,14 @@ namespace Tactile.UI.Builder
         public override void Build(Action<TMessage> update)
         {
             var rectangle = GetComponent<Rectangle>();
-            Rectangle.CornerSizes sizes = new Rectangle.CornerSizes
+            Rectangle.CornerRadii radii = new Rectangle.CornerRadii
             {
                 topLeft = ViewParameters.topLeftRadius.GetValueOrDefault(),
                 topRight = ViewParameters.topRightRadius.GetValueOrDefault(),
                 bottomLeft = ViewParameters.bottomLeftRadius.GetValueOrDefault(),
                 bottomRight = ViewParameters.bottomRightRadius.GetValueOrDefault()
             };
-            rectangle.Corners = sizes;
+            rectangle.Corners = radii;
             rectangle.color = ViewParameters.color.GetValueOrDefault();
         }
     }

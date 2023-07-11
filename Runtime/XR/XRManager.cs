@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using Tactile.Utility.Console;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.XR.Management;
