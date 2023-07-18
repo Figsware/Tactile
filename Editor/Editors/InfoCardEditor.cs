@@ -5,7 +5,7 @@ using Tactile.UI;
 using UnityEditor;
 using UnityEngine;
 
-namespace Tactile.Editor.CustomEditors
+namespace Tactile.Editor.Editors
 {
     [CustomEditor(typeof(InfoCard), true)]
     public class InfoCardEditor : UnityEditor.Editor

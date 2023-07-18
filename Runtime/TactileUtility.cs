@@ -422,5 +422,106 @@ namespace Tactile
 
             return tex;
         }
+
+        public static Vector2 Rotate(this Vector2 vec, float angle)
+        {
+            var rotatedVec = new Vector2(
+                vec.x * Mathf.Cos(angle) - vec.y * Mathf.Sin(angle),
+                vec.x * Mathf.Sin(angle) + vec.y * Mathf.Cos(angle)
+            );
+
+            return rotatedVec;
+        }
+
+        public static UIVertex ToSimpleVert(this Vector2 vec, Color color)
+        {
+            UIVertex uiVert = UIVertex.simpleVert;
+            uiVert.position = vec;
+            uiVert.color = color;
+
+            return uiVert;
+        }
+
+        public static Vector2 Center(this Vector2[] vecs)
+        {
+            float avgX = 0f;
+            float avgY = 0f;
+        
+            foreach (var vec in vecs)
+            {
+                avgX += (vec.x - avgX) / vecs.Length;
+                avgY += (vec.y - avgY) / vecs.Length;
+            }
+        
+            var avgVec = new Vector2(avgX, avgY);
+            
+            return avgVec;
+        }
+
+        public static Vector2 ToXY(this Vector3 vec)
+        {
+            var xy = new Vector2(vec.x, vec.y);
+            return xy;
+        }
+        
+        public static Vector2 ToXZ(this Vector3 vec)
+        {
+            var xy = new Vector2(vec.x, vec.z);
+            return xy;
+        }
+        
+        public static Vector2 ToYZ(this Vector3 vec)
+        {
+            var xy = new Vector2(vec.y, vec.z);
+            return xy;
+        }
+
+        public static Vector3 PositionRelativeTo(this Transform from, Transform relativeTo)
+        {
+            return from.TransformPointRelativeTo(relativeTo, Vector3.zero);
+        }
+
+        public static Vector3 TransformPointRelativeTo(this Transform from, Transform relativeTo, Vector3 localFromPosition)
+        {
+            var world = from.TransformPoint(localFromPosition);
+            var relativePoint = relativeTo.InverseTransformPoint(world);
+            
+            return relativePoint;
+        }
+
+        public static Vector2 GetPivotPosition(this RectTransform rt)
+        {
+            var size = rt.rect.size;
+            var pivotPosition = Vector2.Scale(size, rt.pivot);
+
+            return pivotPosition;
+        }
+
+        public static Vector2 GetScreenSpacePosition(this RectTransform rt)
+        {
+            var parentCanvas = rt.GetComponentInParent<Canvas>();
+            if (parentCanvas.renderMode != RenderMode.ScreenSpaceOverlay)
+                throw new Exception("Cannot get screen position of canvas that isn't in screen space!");
+
+            var canvasRectTransform = parentCanvas.GetComponent<RectTransform>();
+            var screenSize = new Vector2(Screen.width, Screen.height);
+            var canvasRelativePosition = rt.PositionRelativeTo(canvasRectTransform).ToXY();
+            var pivot = Vector2.Scale(rt.pivot, screenSize);
+            var screenPos = canvasRelativePosition + pivot;
+            
+            return screenPos;
+        }
+        
+        public static Vector2 CalculatePointerOffset(this RectTransform rt, Vector2 screenPosition)
+        {
+            var offset = (rt.GetScreenSpacePosition() - screenPosition).normalized;
+            return offset;
+        }
+
+        public static float SignedAngleTo(this Vector2 v, Vector2 w)
+        {
+            var angle = Mathf.Atan2(w.y * v.x - w.x * v.y, w.x * v.x + w.y * v.y);
+            return angle;
+        }
     }
 }

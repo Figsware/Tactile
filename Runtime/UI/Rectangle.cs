@@ -6,7 +6,6 @@ using UnityEngine.UIElements;
 
 namespace Tactile.UI
 {
-
     /// <summary>
     /// A rectangle that can have each of its corners curved. A number of corner vertices can be specified to increase
     /// the resolution of the corners.

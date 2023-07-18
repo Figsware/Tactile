@@ -1,8 +1,5 @@
-﻿using System;
-using Tactile.Utility.Console;
-using UnityEditor;
+﻿using Tactile.Utility.Console;
 using UnityEngine;
-using Console = Tactile.Utility.Console.Console;
 
 namespace Tactile.Gadgets
 {
@@ -12,11 +9,7 @@ namespace Tactile.Gadgets
         [SerializeField] private Rect consoleRect;
 
         private string _consoleInput = string.Empty;
-
-        private void Awake()
-        {
-            
-        }
+        private Vector2 _scrollVector = Vector2.zero;
 
         private void ExecuteCommand()
         {
@@ -26,7 +19,12 @@ namespace Tactile.Gadgets
                 return;
             
             console.ExecuteCommand(_consoleInput);
-            _consoleInput = string.Empty;
+            _consoleInput = string.Empty; 
+        }
+
+        protected override void OnNewConsoleText(string text)
+        {
+            _scrollVector = new Vector2(0, float.PositiveInfinity);
         }
 
         private void OnGUI()
@@ -37,13 +35,18 @@ namespace Tactile.Gadgets
             GUILayout.BeginArea(consoleRect);
             GUILayout.BeginVertical("box", GUILayout.ExpandHeight(true));
             GUILayout.Box("Console");
-            // GUILayout.Label("Console");
 
             if (console)
             {
                 var consoleTextStyle = new GUIStyle(GUI.skin.label);
                 consoleTextStyle.alignment = TextAnchor.LowerLeft;
+                
+                // Console text
+                _scrollVector = GUILayout.BeginScrollView(_scrollVector);
+
                 GUILayout.Label(console.GetConsoleText(), consoleTextStyle, GUILayout.ExpandHeight(true));
+                GUILayout.EndScrollView();
+                
                 GUILayout.BeginHorizontal();
                 _consoleInput = GUILayout.TextArea(_consoleInput, GUILayout.ExpandWidth(true));
                 

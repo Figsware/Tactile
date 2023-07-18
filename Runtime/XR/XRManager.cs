@@ -22,8 +22,15 @@ namespace Tactile.XR
 
         public UnityEvent<bool> OnXRStatusChanged;
 
+        public bool XREnabled
+        {
+            get => isXREnabled;
+            set => SetXREnabled(value);
+        }
+        
         public void SetXREnabled(bool enabled)
         {
+            isXREnabled = enabled;
             OnXRStatusChanged.Invoke(enabled);
         }
         

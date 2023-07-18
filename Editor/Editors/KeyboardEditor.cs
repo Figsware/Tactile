@@ -5,7 +5,7 @@ using Tactile.UI.Keyboard;
 using UnityEditor;
 using UnityEngine;
 
-namespace Tactile.Editor.CustomEditors
+namespace Tactile.Editor.Editors
 {
     [CustomEditor(typeof(KeyboardManager), true)]
     public class KeyboardEditor : UnityEditor.Editor

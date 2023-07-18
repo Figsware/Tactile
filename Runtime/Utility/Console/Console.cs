@@ -10,11 +10,22 @@ namespace Tactile.Utility.Console
 {
     public class Console : MonoBehaviour
     {
-        public UnityEvent<string> onNewCommandExecuted;
+        public delegate void NewConsoleTextHandler(string newText);
+        public event NewConsoleTextHandler OnNewConsoleText;
 
         private Dictionary<string, Command> _commands = new Dictionary<string, Command>();
         private string _consoleText = string.Empty;
         private static Regex CommandRegex = new Regex(@"(?:""((?:\\""|[^""])+)""|((?:\\""|[^\s""])+))");
+
+        protected string ConsoleText
+        {
+            get => _consoleText;
+            set
+            {
+                _consoleText = value;
+                OnNewConsoleText?.Invoke(_consoleText);
+            }
+        }
 
         private void Awake()
         {
@@ -66,7 +77,7 @@ namespace Tactile.Utility.Console
 
         public string GetConsoleText()
         {
-            return _consoleText;
+            return ConsoleText;
         }
 
         public void ExecuteCommand(string command)
@@ -115,7 +126,8 @@ namespace Tactile.Utility.Console
 
         public void ClearConsole()
         {
-            _consoleText = string.Empty;
+            ConsoleText = string.Empty;
+            
         }
 
         public void Log(string message, bool withTime = true)
@@ -123,7 +135,7 @@ namespace Tactile.Utility.Console
             var now = DateTime.Now;
             var time = withTime ? $"[{now:T}] " : string.Empty;
             var formattedText = $"{time}{message}\n";
-            _consoleText += formattedText;
+            ConsoleText += formattedText;
         }
 
         public void LogWarning(string message) => LogWithColor(message, Color.yellow);

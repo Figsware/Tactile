@@ -2,7 +2,8 @@
     "name": "Tactile.Editor",
     "rootNamespace": "Tactile",
     "references": [
-        "GUID:cbbb58a2b0ae4cf4caaa516443f5a68e"
+        "GUID:cbbb58a2b0ae4cf4caaa516443f5a68e",
+        "GUID:2ac5eaffaf6f7b9429dca09f2e9bb142"
     ],
     "includePlatforms": [
         "Editor"
