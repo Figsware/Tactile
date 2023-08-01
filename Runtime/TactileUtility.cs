@@ -58,7 +58,8 @@ namespace Tactile
                 orientation.ApplyToTransform(transform, local);
             }
 
-            yield return Orientation.LerpOrientationCoroutineWithArc(from, targetOrientation, arcAxis, arcHeight, linerLerpEnumerator, Orient);
+            yield return Orientation.LerpOrientationCoroutineWithArc(from, targetOrientation, arcAxis, arcHeight,
+                linerLerpEnumerator, Orient);
         }
 
         /// <summary>
@@ -82,7 +83,7 @@ namespace Tactile
                 }
 
                 Orientation from = Orientation.FromTransform(transform, local);
-                
+
                 var linearLerpEnumerator = CreateLinearLerpEnumerator(time, token);
 
                 if (slerp)
@@ -101,14 +102,14 @@ namespace Tactile
                 Debug.LogError("Tried to lerp a non-existent Transform!");
             }
         }
-        
+
         public static IEnumerator LinearScaleCoroutine(this Transform transform, Vector3 targetLocalScale, float time,
             CancelToken token = null)
         {
             if (transform != null && transform)
             {
                 Vector3 startScale = transform.localScale;
-                yield return LinearLerpOverTimeCoroutine(time,
+                yield return LerpFunctionCoroutine(time,
                     t => transform.localScale = Vector3.Lerp(startScale, targetLocalScale, t), token);
             }
         }
@@ -214,24 +215,31 @@ namespace Tactile
         }
 
         /// <summary>
-        /// Performs an action over time using a linear lerp function.
+        /// Performs an action over time using a linear lerp.
         /// </summary>
-        /// <param name="time">The time to perform the action</param>
-        /// <param name="action">The action to receive the linear lerp value</param>
-        public static IEnumerator LinearLerpOverTimeCoroutine(float time, Action<float> action,
-            CancelToken token = null)
+        /// <param name="time">The time to call the lerp function over</param>
+        /// <param name="lerpFunction">The function to calculate the lerp value based on the elapsed time.</param>
+        /// <param name="action">The action to receive the lerp value</param>
+        public static IEnumerator LerpFunctionCoroutine(float time,
+            Action<float> action, CancelToken token = null)
         {
-            yield return LerpFuncOverTimeCoroutine(time, elapsed => elapsed / time, action, token);
+            yield return LerpFunctionCoroutine(time, action, t => t, token);
         }
 
-        public static IEnumerator LerpFunctionCoroutine(float time, Func<float, float> lerpFunction,
-            Action<float> action, CancelToken token = null)
+        /// <summary>
+        /// Performs an action over time using a specified lerp function.
+        /// </summary>
+        /// <param name="time">The time to call the lerp function over</param>
+        /// <param name="action">The action to receive the lerp value</param>
+        /// <param name="lerpFunction">The function to calculate the lerp value based on the elapsed time.</param>
+        public static IEnumerator LerpFunctionCoroutine(float time,
+            Action<float> action, Func<float, float> lerpFunction, CancelToken token = null)
         {
             float elapsed = 0f;
             while (token && elapsed <= time)
             {
                 // Calculate lerp from lerp function.
-                float t = lerpFunction(elapsed);
+                float t = lerpFunction(elapsed / time);
 
                 // Perform action using lerp.
                 action(t);
@@ -253,33 +261,6 @@ namespace Tactile
         public static IEnumerator<float> CreateLinearLerpEnumerator(float time, CancelToken token = null)
         {
             return CreateTimeBasedLerpEnumerator(time, elapsed => elapsed / time, token);
-        }
-
-        /// <summary>
-        /// Performs an action over time using a specified lerp function.
-        /// </summary>
-        /// <param name="time">The time to call the lerp function over</param>
-        /// <param name="lerpFunction">The function to calculate the lerp value based on the elapsed time.</param>
-        /// <param name="action">The action to receive the lerp value</param>
-        public static IEnumerator LerpFuncOverTimeCoroutine(float time, Func<float, float> lerpFunction,
-            Action<float> action, CancelToken token = null)
-        {
-            float elapsed = 0f;
-            while (token && elapsed <= time)
-            {
-                // Calculate lerp from lerp function.
-                float t = lerpFunction(elapsed);
-
-                // Perform action using lerp.
-                action(t);
-
-                // Wait extra frame and elapse time.
-                elapsed += Time.deltaTime;
-                yield return null;
-            }
-
-            // Give a lerp value of 1 so that it always finishes in a completed state.
-            action(1f);
         }
 
         /// <summary>
@@ -390,11 +371,13 @@ namespace Tactile
             }
         }
 
-        public static void DestroyAllChildren(this GameObject gameObject) {
+        public static void DestroyAllChildren(this GameObject gameObject)
+        {
             gameObject.transform.DestroyAllChildren();
         }
 
-        public static T[] GetComponentsInDirectChildren<T>(this GameObject gameObject, bool includeInactive = false) where T: MonoBehaviour
+        public static T[] GetComponentsInDirectChildren<T>(this GameObject gameObject, bool includeInactive = false)
+            where T : MonoBehaviour
         {
             List<T> components = new List<T>();
             for (int i = 0; i < gameObject.transform.childCount; i++)
@@ -446,15 +429,15 @@ namespace Tactile
         {
             float avgX = 0f;
             float avgY = 0f;
-        
+
             foreach (var vec in vecs)
             {
                 avgX += (vec.x - avgX) / vecs.Length;
                 avgY += (vec.y - avgY) / vecs.Length;
             }
-        
+
             var avgVec = new Vector2(avgX, avgY);
-            
+
             return avgVec;
         }
 
@@ -463,13 +446,13 @@ namespace Tactile
             var xy = new Vector2(vec.x, vec.y);
             return xy;
         }
-        
+
         public static Vector2 ToXZ(this Vector3 vec)
         {
             var xy = new Vector2(vec.x, vec.z);
             return xy;
         }
-        
+
         public static Vector2 ToYZ(this Vector3 vec)
         {
             var xy = new Vector2(vec.y, vec.z);
@@ -481,11 +464,12 @@ namespace Tactile
             return from.TransformPointRelativeTo(relativeTo, Vector3.zero);
         }
 
-        public static Vector3 TransformPointRelativeTo(this Transform from, Transform relativeTo, Vector3 localFromPosition)
+        public static Vector3 TransformPointRelativeTo(this Transform from, Transform relativeTo,
+            Vector3 localFromPosition)
         {
             var world = from.TransformPoint(localFromPosition);
             var relativePoint = relativeTo.InverseTransformPoint(world);
-            
+
             return relativePoint;
         }
 
@@ -508,10 +492,10 @@ namespace Tactile
             var canvasRelativePosition = rt.PositionRelativeTo(canvasRectTransform).ToXY();
             var pivot = Vector2.Scale(rt.pivot, screenSize);
             var screenPos = canvasRelativePosition + pivot;
-            
+
             return screenPos;
         }
-        
+
         public static Vector2 CalculatePointerOffset(this RectTransform rt, Vector2 screenPosition)
         {
             var offset = (rt.GetScreenSpacePosition() - screenPosition).normalized;
