@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using Tactile.Utility;
+using Tactile.Utility.Templates;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -506,6 +507,37 @@ namespace Tactile
         {
             var angle = Mathf.Atan2(w.y * v.x - w.x * v.y, w.x * v.x + w.y * v.y);
             return angle;
+        }
+        
+        public static bool IsIndexValid<T>(this ICollection<T> collection, int index)
+        {
+            return collection != null && index >= 0 && index < collection.Count;
+        }
+
+        public static void SetReferenceIfHasValue<T>(this T? nullableValue, ref T referenceValue) where T : struct
+        {
+            if (nullableValue.HasValue)
+            {
+                referenceValue = nullableValue.Value;
+            }
+        }
+
+        public static float Mod(float x, float m)
+        {
+            return (x % m + m) % m;
+        }
+
+        public static void SetToLocalOrigin(this Transform transform, bool setPosition = true, bool setRotation = true,
+            bool setScale = true)
+        {
+            if (setPosition)
+                transform.localPosition = Vector3.zero;
+            
+            if (setRotation)
+                transform.localRotation = Quaternion.identity;
+
+            if (setScale)
+                transform.localScale = Vector3.one;
         }
     }
 }

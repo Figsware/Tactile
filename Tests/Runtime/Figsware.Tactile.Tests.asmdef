@@ -1,0 +1,16 @@
+{
+    "name": "Figsware.Tactile.Tests",
+    "rootNamespace": "Tactile.Tests.Runtime",
+    "references": [
+        "GUID:cbbb58a2b0ae4cf4caaa516443f5a68e"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -49,5 +49,15 @@ namespace Tactile.UI
 
             return contentRects;
         }
+
+        public static void Stretch(this RectTransform rectTransform) => rectTransform.Stretch(0, 0, 0, 0);
+
+        public static void Stretch(this RectTransform rectTransform, float left, float right, float top, float bottom)
+        {
+            rectTransform.anchorMin = Vector2.zero;
+            rectTransform.anchorMax = Vector2.one;
+            rectTransform.offsetMin = new Vector2(left, bottom);
+            rectTransform.offsetMax = new Vector2(-right, -top);
+        }
     }
 }

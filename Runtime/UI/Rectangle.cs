@@ -11,6 +11,7 @@ namespace Tactile.UI
     /// the resolution of the corners.
     /// </summary>
     [RequireComponent(typeof(CanvasRenderer))]
+    [AddComponentMenu("UI/Rectangle")]
     [ExecuteInEditMode]
     public class Rectangle : Graphic
     {

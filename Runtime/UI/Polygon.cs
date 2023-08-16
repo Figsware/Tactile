@@ -24,40 +24,58 @@ namespace Tactile.UI
         [SerializeField, Range(0, 360)] private float endAngle = 360f;
         [SerializeField] private bool fillToSquare = true;
 
-        private Dictionary<int, (Vector2 offset, float maxDimension)> _sideOffsetAndScales = new();
-        private float _anglePerSide = 0f;
-        private Vector2 _scale = Vector2.one;
-        private Vector2 _pivot = Vector2.one;
+        private readonly Dictionary<int, (Vector2 offset, float maxDimension)> _sideOffsetAndScales = new();
 
-        protected override void OnValidate()
+        public float StartAngle
         {
-            base.OnValidate();
-            RecalculatePolygonParameters();
+            get => startAngle;
+            set => SetFieldAndMarkDirty(ref startAngle, value);
+        }
+        
+        public float EndAngle
+        {
+            get => endAngle;
+            set => SetFieldAndMarkDirty(ref endAngle, value);
         }
 
-        protected override void OnRectTransformDimensionsChange()
+        public int Sides
         {
-            base.OnRectTransformDimensionsChange();
-            RecalculatePolygonParameters();
+            get => sides;
+            set => SetFieldAndMarkDirty(ref sides, value);
         }
 
+        public float InnerRadius
+        {
+            get => innerRadius;
+            set => SetFieldAndMarkDirty(ref innerRadius, Mathf.Clamp(value, 0f, 1f));
+        }
+
+        private void SetFieldAndMarkDirty<T>(ref T field, T value)
+        {
+            field = value;
+            SetVerticesDirty();
+        }
+        
         protected override void OnPopulateMesh(VertexHelper vh)
         {
             vh.Clear();
+            var anglePerSide = CalculateAnglePerSide();
+            var rect = rectTransform.rect;
+            var scale = 0.5f * new Vector2(rect.width, rect.height);
+            var pivot = Vector2.Scale(rectTransform.pivot, rect.size) - rect.size / 2f;
 
             float minAngle = Mathf.Min(startAngle, endAngle) * Mathf.Deg2Rad;
             float maxAngle = Mathf.Max(startAngle, endAngle) * Mathf.Deg2Rad;
 
-            float segmentMinAngle = GetSegmentStart(minAngle);
-            float angleRange = maxAngle - minAngle;
-            int segments = Mathf.CeilToInt(angleRange / _anglePerSide);
+            float segmentMinAngle = GetSegmentStart(minAngle, anglePerSide);
+            int segments = Mathf.FloorToInt(maxAngle / anglePerSide) - Mathf.FloorToInt(minAngle / anglePerSide) + 1;
 
             Vector2[] segmentVectors = new Vector2[segments + 1];
             
             for (int i = 0; i < segmentVectors.Length; i++)
             {
-                float segmentAngle = Mathf.Min(maxAngle, Mathf.Max(minAngle, segmentMinAngle + i * _anglePerSide));
-                segmentVectors[i] = AngleToUnitVector(segmentAngle);
+                float segmentAngle = Mathf.Min(maxAngle, Mathf.Max(minAngle, segmentMinAngle + i * anglePerSide));
+                segmentVectors[i] = AngleToUnitVector(segmentAngle, anglePerSide);
             }
 
             for (int i = 0; i < segments; i++)
@@ -67,10 +85,10 @@ namespace Tactile.UI
                 var endInVec = innerRadius * endOutVec;
                 var startInVec = innerRadius * startOutVec;
 
-                var startOutVert = UnitVectorToUIVert(startOutVec);
-                var endOutVert = UnitVectorToUIVert(endOutVec);
-                var endInVert = UnitVectorToUIVert(endInVec);
-                var startInVert = UnitVectorToUIVert(startInVec);
+                var startOutVert = UnitVectorToUIVert(startOutVec, scale, pivot);
+                var endOutVert = UnitVectorToUIVert(endOutVec, scale, pivot);
+                var endInVert = UnitVectorToUIVert(endInVec, scale, pivot);
+                var startInVert = UnitVectorToUIVert(startInVec, scale, pivot);
 
                 var triangleOffset = i * 4;
                 var startOutIndex = triangleOffset;
@@ -87,15 +105,17 @@ namespace Tactile.UI
                 vh.AddTriangle(startInIndex, endOutIndex, endInIndex);
             }
         }
+        
+        private float CalculateAnglePerSide() => 2 * Mathf.PI / sides;
 
         /// <summary>
         /// Gets the start angle of the segment containing the specified angle.
         /// </summary>
         /// <param name="angle">An angle within the polygon.</param>
         /// <returns>The start angle of the segment containing the specified angle</returns>
-        private float GetSegmentStart(float angle)
+        private float GetSegmentStart(float angle, float anglePerSide)
         {
-            var segmentStart = Mathf.Floor(angle / _anglePerSide) * _anglePerSide;
+            var segmentStart = Mathf.Floor(angle / anglePerSide) * anglePerSide;
 
             return segmentStart;
         }
@@ -105,9 +125,9 @@ namespace Tactile.UI
         /// </summary>
         /// <param name="angle">An angle within the polygon.</param>
         /// <returns>The end angle of the segment containing the specified angle</returns>
-        private float GetSegmentEnd(float angle)
+        private float GetSegmentEnd(float angle, float anglePerSide)
         {
-            var segmentEnd = Mathf.Ceil(angle / _anglePerSide) * _anglePerSide;
+            var segmentEnd = Mathf.Ceil(angle / anglePerSide) * anglePerSide;
 
             return segmentEnd;
         }
@@ -117,18 +137,18 @@ namespace Tactile.UI
         /// </summary>
         /// <param name="angle">The angle to get the vector for.</param>
         /// <returns>A vector along the perimeter of the polygon.</returns>
-        private Vector2 AngleToUnitVector(float angle)
+        private Vector2 AngleToUnitVector(float angle, float anglePerSide)
         {
-            float mod = angle % _anglePerSide;
+            float mod = angle % anglePerSide;
             Vector2 unitVec;
 
             if (mod > 0)
             {
-                var segmentStart = GetSegmentStart(angle);
-                var segmentEnd = GetSegmentEnd(angle);
+                var segmentStart = GetSegmentStart(angle, anglePerSide);
+                var segmentEnd = GetSegmentEnd(angle, anglePerSide);
                 var startVec = Vector2.up.Rotate(segmentStart);
                 var endVec = Vector2.up.Rotate(segmentEnd);
-                unitVec = Vector2.Lerp(startVec, endVec, mod / _anglePerSide);
+                unitVec = Vector2.Lerp(startVec, endVec, mod / anglePerSide);
             }
             else
             {
@@ -138,7 +158,7 @@ namespace Tactile.UI
             return unitVec;
         }
 
-        private UIVertex UnitVectorToUIVert(Vector2 vec)
+        private UIVertex UnitVectorToUIVert(Vector2 vec, Vector2 scale, Vector2 pivot)
         {
             Vector2 shapeVec = vec;
             
@@ -156,10 +176,10 @@ namespace Tactile.UI
             shapeVec = shapeVec.Rotate(offset * Mathf.Deg2Rad);
             
             // Scale based on rect
-            shapeVec = Vector2.Scale(shapeVec, _scale);
+            shapeVec = Vector2.Scale(shapeVec, scale);
             
             // Offset through pivot
-            shapeVec -= _pivot;
+            shapeVec -= pivot;
 
             var vert = shapeVec.ToSimpleVert(color);
             vert.uv0 = 0.5f * (vec + Vector2.one);
@@ -169,8 +189,12 @@ namespace Tactile.UI
 
         private (Vector2 offset, float maxDimension) GetSideOffsetAndScale()
         {
+            
             if (!_sideOffsetAndScales.ContainsKey(sides))
             {
+                // Manually calculate this value here in case it hasn't been already.
+                var anglePerSide = 2 * Mathf.PI / sides;
+                
                 Vector2[] segmentVectors = new Vector2[sides];
                 float minX = float.PositiveInfinity;
                 float minY = float.PositiveInfinity;
@@ -179,7 +203,7 @@ namespace Tactile.UI
 
                 for (int i = 0; i < sides; i++)                                                           
                 {                                                                                                         
-                    float segmentAngle = i * _anglePerSide;
+                    float segmentAngle = i * anglePerSide;
                     var vec = Vector2.up.Rotate(segmentAngle);
 
                     minX = Mathf.Min(minX, vec.x);
@@ -197,14 +221,6 @@ namespace Tactile.UI
             }
             
             return _sideOffsetAndScales[sides];
-        }
-
-        private void RecalculatePolygonParameters()
-        {
-            _anglePerSide = 2 * Mathf.PI / sides;
-            var rect = rectTransform.rect;
-            _scale = 0.5f * new Vector2(rect.width, rect.height);
-            _pivot = Vector2.Scale(rectTransform.pivot, rect.size) - rect.size / 2f;
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using Tactile.Utility.Console;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.XR.Management;
@@ -13,40 +12,73 @@ namespace Tactile.XR
     [AddComponentMenu("Tactile/XR/XR Manager")]
     public class XRManager : MonoBehaviour
     {
-        [Tooltip("Whether XR is currently enabled.")]
-        [SerializeField] private bool isXREnabled = true;
-        
-        public UnityEvent OnXREnabled;
-
-        public UnityEvent OnXRDisabled;
+        [Tooltip("Whether XR is currently enabled.")] [SerializeField]
+        private bool isXREnabled = true;
 
         public UnityEvent<bool> OnXRStatusChanged;
+        private bool _wasLoaderInitializedThisSession = false;
+
+        private void Start()
+        {
+#if UNITY_EDITOR
+
+            var mode = GetXROverrideMode();
+            if (mode == XROverrideMode.ForceOff)
+                isXREnabled = false;
+
+            if (mode == XROverrideMode.ForceOn)
+                isXREnabled = true;
+
+#endif
+
+            SetXREnabled(isXREnabled);
+        }
 
         public bool XREnabled
         {
             get => isXREnabled;
             set => SetXREnabled(value);
         }
-        
-        public void SetXREnabled(bool enabled)
+
+        public void SetXREnabled(bool xrEnabled)
         {
-            isXREnabled = enabled;
-            OnXRStatusChanged.Invoke(enabled);
+            isXREnabled = xrEnabled;
+
+            if (xrEnabled)
+            {
+                StartXR();
+            }
+            else
+            {
+                StopXR();
+            }
         }
-        
+
+        public void ToggleXR()
+        {
+            SetXREnabled(!XREnabled);
+        }
+
+        private void StartXR() => StartCoroutine(StartXRCoroutine());
+
+        private IEnumerator InitializeXR()
+        {
+            if (IsXRInitialized())
+                XRGeneralSettings.Instance.Manager.DeinitializeLoader();
+
+            Debug.Log("Initializing XR...");
+            yield return XRGeneralSettings.Instance.Manager.InitializeLoader();
+            _wasLoaderInitializedThisSession = true;
+        }
+
         /// <summary>
         /// A coroutine to enable the XR loader. Borrowed from Unity documentation.
         /// </summary>
         /// <seealso href="https://docs.unity3d.com/Packages/com.unity.xr.management@4.2/manual/EndUser.html"/>
-        public IEnumerator StartXRCoroutine()
+        private IEnumerator StartXRCoroutine()
         {
-            Debug.Log("Initializing XR...");
-
-            // Necessary for some reason.
-            if (IsXRRunning())
-                StopXR();
-
-            yield return XRGeneralSettings.Instance.Manager.InitializeLoader();
+            if (!(_wasLoaderInitializedThisSession && !IsXRInitialized()))
+                yield return InitializeXR();
 
             if (XRGeneralSettings.Instance.Manager.activeLoader == null)
             {
@@ -56,7 +88,7 @@ namespace Tactile.XR
             {
                 Debug.Log("Starting XR...");
                 XRGeneralSettings.Instance.Manager.StartSubsystems();
-                OnXREnabled.Invoke();
+                OnXRStatusChanged.Invoke(true);
             }
         }
 
@@ -64,27 +96,52 @@ namespace Tactile.XR
         /// Stops any XR loader. Borrowed from Unity documentation.
         /// </summary>
         /// <seealso href="https://docs.unity3d.com/Packages/com.unity.xr.management@4.2/manual/EndUser.html"/>
-        public void StopXR()
+        private void StopXR()
         {
             if (XRGeneralSettings.Instance.Manager.activeLoader != null)
             {
                 Debug.Log("Stopping XR...");
 
                 XRGeneralSettings.Instance.Manager.StopSubsystems();
-                XRGeneralSettings.Instance.Manager.DeinitializeLoader();
-                Debug.Log("XR stopped completely.");
-                OnXRDisabled.Invoke();
-            }
-            else
-            {
-                Debug.LogWarning("Tried to stop XR, but there is no active loader.");
+                OnXRStatusChanged.Invoke(false);
             }
         }
 
-        public static bool IsXRRunning()
+        public static bool IsXRInitialized()
         {
             return XRGeneralSettings.Instance.Manager != null &&
                    XRGeneralSettings.Instance.Manager.isInitializationComplete;
         }
+
+        private void OnDestroy()
+        {
+            if (IsXRInitialized())
+                XRGeneralSettings.Instance.Manager.DeinitializeLoader();
+        }
+
+        #region Editor Methods
+
+#if UNITY_EDITOR
+        public const string XREnabledKey = "TACTILE_XR_ENABLED";
+
+        public enum XROverrideMode
+        {
+            Default,
+            ForceOff,
+            ForceOn
+        }
+
+        public static XROverrideMode GetXROverrideMode()
+        {
+            return (XROverrideMode)UnityEditor.EditorPrefs.GetInt(XREnabledKey, (int)XROverrideMode.Default);
+        }
+
+        public static void SetXROverrideMode(XROverrideMode newMode)
+        {
+            UnityEditor.EditorPrefs.SetInt(XREnabledKey, (int)newMode);
+        }
+#endif
+
+        #endregion
     }
 }

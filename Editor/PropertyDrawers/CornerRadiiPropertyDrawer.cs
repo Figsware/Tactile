@@ -33,7 +33,7 @@ namespace Tactile.Editor.CustomEditors
 
             position = EditorGUI.PrefixLabel(position, label);
             
-            var rects = position.SplitRects(TactileGUI.SplitDirection.Horizontal, 4, -EditorGUIUtility.singleLineHeight, 1, 1f, 1f, 1f);
+            var rects = position.SplitRects(TactileGUI.SplitDirection.Horizontal, 4, -EditorGUIUtility.singleLineHeight, 1f, 1f, 1f, 1f);
 
 
             var topLeftName = $"{property.name}-topLeft";
