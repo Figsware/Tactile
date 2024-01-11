@@ -7,23 +7,31 @@ using Tactile.Utility.Templates;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using Component = UnityEngine.Component;
 
 namespace Tactile.UI
 {
     [Serializable]
-    public class UIAction : INotifyPropertyChanged
+    public class UIAction : INotifyPropertyChanged, ISerializationCallbackReceiver
     {
         [SerializeField] private string name;
         [SerializeField] private string description;
         [SerializeField] private Texture icon;
         [SerializeField] private bool disabled;
-        [SerializeField] private UnityNullable<TemplateItem<Color>> color;
-        [SerializeField] private UnityNullable<TemplateItem<Color>> normalColor;
-        [SerializeField] private UnityNullable<TemplateItem<Color>> highlightedColor;
-        [SerializeField] private UnityNullable<TemplateItem<Color>> pressedColor;
-        [SerializeField] private UnityNullable<TemplateItem<Color>> selectedColor;
-        [SerializeField] private UnityNullable<TemplateItem<Color>> disabledColor;
+        [SerializeField] private string radioGroupId;
+        [SerializeField] private bool toggleable;
+        [SerializeField] private UnityNullable<Template<Color>.Reference> color;
+        [SerializeField] private UnityNullable<Template<Color>.Reference> normalColor;
+        [SerializeField] private UnityNullable<Template<Color>.Reference> highlightedColor;
+        [SerializeField] private UnityNullable<Template<Color>.Reference> pressedColor;
+        [SerializeField] private UnityNullable<Template<Color>.Reference> selectedColor;
+        [SerializeField] private UnityNullable<Template<Color>.Reference> disabledColor;
         [Header("Events")] public UnityEvent onSelect;
+        [Header("Events")] public UnityEvent onDeselect;
+
+        private bool selected = false;
+
+        private static Dictionary<string, UIAction> RadioGroupSelections = new();
 
         public string Name
         {
@@ -43,48 +51,19 @@ namespace Tactile.UI
             set => SetField(ref icon, value);
         }
 
-        public Color? Color
-        {
-            get => color.GetNullableTemplateItemValue();
-            set => color.SetNullableTemplateItemValue(value);
-        }
+        public Template<Color>.Reference Color => color;
 
-        public Color? NormalColor
-        {
-            get => normalColor.GetNullableTemplateItemValue();
-            set => SetNullableTemplateItemValueField(ref normalColor, value);
-        }
-
-        public Color? HighlightedColor
-        {
-            get => highlightedColor.GetNullableTemplateItemValue();
-            set => SetNullableTemplateItemValueField(ref highlightedColor, value);
-        }
-
-        public Color? PressedColor
-        {
-            get => pressedColor.GetNullableTemplateItemValue();
-            set => SetNullableTemplateItemValueField(ref pressedColor, value);
-        }
-
-        public Color? SelectedColor
-        {
-            get => selectedColor.GetNullableTemplateItemValue();
-            set => SetNullableTemplateItemValueField(ref selectedColor, value);
-        }
-
-        public Color? DisabledColor
-        {
-            get => disabledColor.GetNullableTemplateItemValue();
-            set => SetNullableTemplateItemValueField(ref disabledColor, value);
-        }
+        public Template<Color>.Reference NormalColor => normalColor;
+        public Template<Color>.Reference HighlightedColor => highlightedColor;
+        public Template<Color>.Reference PressedColor => pressedColor;
+        public Template<Color>.Reference SelectedColor => selectedColor;
+        public Template<Color>.Reference DisabledColor => disabledColor;
 
         public bool Disabled
         {
             get => disabled;
             set => SetField(ref disabled, value);
         }
-
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -93,7 +72,7 @@ namespace Tactile.UI
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        protected void SetNullableTemplateItemValueField<T>(ref UnityNullable<TemplateItem<T>> unityNullable, T? value,
+        protected void SetNullableTemplateItemValueField<T>(ref UnityNullable<Template<T>.Reference> unityNullable, T? value,
             [CallerMemberName] string propertyName = null)
             where T : struct
         {
@@ -118,26 +97,81 @@ namespace Tactile.UI
             }
         }
 
-        public ColorBlock SetColorBlock(ColorBlock block)
+        public ColorBlock SetColorBlock(ColorBlock block, Component component)
         {
             var newBlock = block;
 
             if (NormalColor is { } normalColor)
-                newBlock.normalColor = normalColor;
+                newBlock.normalColor = normalColor.GetValue(component);
 
             if (HighlightedColor is { } highlightedColor)
-                newBlock.highlightedColor = highlightedColor;
+                newBlock.highlightedColor = highlightedColor.GetValue(component);
 
             if (PressedColor is { } pressedColor)
-                newBlock.pressedColor = pressedColor;
+                newBlock.pressedColor = pressedColor.GetValue(component);
 
             if (SelectedColor is { } selectedColor)
-                newBlock.selectedColor = selectedColor;
+                newBlock.selectedColor = selectedColor.GetValue(component);
 
             if (DisabledColor is { } disabledColor)
-                newBlock.disabledColor = disabledColor;
+                newBlock.disabledColor = disabledColor.GetValue(component);
 
             return newBlock;
+        }
+
+        public void Invoke()
+        {
+            if (!string.IsNullOrEmpty(radioGroupId))
+            {
+                var otherIsSelected = RadioGroupSelections.ContainsKey(radioGroupId);
+                if (!otherIsSelected || RadioGroupSelections[radioGroupId] != this)
+                {
+                    if (otherIsSelected)
+                    {
+                        RadioGroupSelections[radioGroupId].Deselect();
+                    }
+
+                    RadioGroupSelections[radioGroupId] = this;
+                    Select();
+                }
+            }
+            else if (toggleable)
+            {
+                if (selected)
+                {
+                    Deselect();
+                }
+                else
+                {
+                    Select();
+                }
+            }
+            else
+            {
+                Select();
+            }
+        }
+
+        private void Select()
+        {
+            Debug.Log(name + " selected!");
+            onSelect.Invoke();
+            selected = toggleable || !string.IsNullOrEmpty(radioGroupId);
+        }
+
+        private void Deselect()
+        {
+            Debug.Log(name + " deselected!");
+            onDeselect.Invoke();
+            selected = false;
+        }
+
+        public void OnBeforeSerialize()
+        {
+        }
+
+        public void OnAfterDeserialize()
+        {
         }
     }
 }

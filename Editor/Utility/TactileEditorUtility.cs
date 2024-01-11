@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿using System.Reflection;
+using UnityEditor;
 using UnityEngine;
 
 namespace Tactile.Editor
@@ -33,6 +34,18 @@ namespace Tactile.Editor
         static void OpenTemporaryCachePath()
         {
             EditorUtility.OpenWithDefaultApp(Application.temporaryCachePath);
+        }
+        
+        public static T CastProperty<T>(this SerializedProperty property)
+        {
+            var targetObject = property.serializedObject.targetObject;
+            var targetObjectType = targetObject.GetType();
+            var field = targetObjectType.GetField(property.propertyPath,
+                BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+            if (field == null) return default;
+            var cast = (T)field.GetValue(targetObject);
+
+            return cast;
         }
     }
 }

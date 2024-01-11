@@ -23,7 +23,7 @@ namespace Tactile.UI
         private void ConfigureButton()
         {
             button.interactable = !Action.Disabled;
-            button.colors = Action.SetColorBlock(button.colors);
+            button.colors = Action.SetColorBlock(button.colors, this);
         }
 
         private void OnButtonSelect()

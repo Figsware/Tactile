@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Tactile.Utility;
 using Tactile.Utility.Templates;
 using UnityEngine;
@@ -508,7 +509,7 @@ namespace Tactile
             var angle = Mathf.Atan2(w.y * v.x - w.x * v.y, w.x * v.x + w.y * v.y);
             return angle;
         }
-        
+
         public static bool IsIndexValid<T>(this ICollection<T> collection, int index)
         {
             return collection != null && index >= 0 && index < collection.Count;
@@ -532,12 +533,61 @@ namespace Tactile
         {
             if (setPosition)
                 transform.localPosition = Vector3.zero;
-            
+
             if (setRotation)
                 transform.localRotation = Quaternion.identity;
 
             if (setScale)
                 transform.localScale = Vector3.one;
+        }
+
+        public static Transform GetParentOrWorldMatrix(this Transform transform)
+        {
+            return transform.parent == null ? transform : transform.parent;
+        }
+
+        public static T GetOrAddComponent<T>(this GameObject gameObject) where T : Component
+        {
+            var component = gameObject.GetComponent<T>();
+            if (!component)
+            {
+                component = gameObject.AddComponent<T>();
+            }
+
+            return component;
+        }
+
+        public static T GetComponentInParents<T>(this Component component, bool includeInactive = false) where T : Component
+        {
+            var parent = component.transform.parent != null ? component.transform.parent : component.transform;
+            return parent.GetComponentInParent<T>(includeInactive);
+        }
+
+        public static IEnumerator EvaluateCoroutine(this AnimationCurve curve, float time, Action<float> func)
+        {
+            yield return LerpFunctionCoroutine(time, func, curve.Evaluate);
+        }
+
+        public static void CrossFadeAlphaRecursive(this Graphic graphic, float alpha, float duration, bool ignoreTimeScale)
+        {
+            foreach (var childGraphic in graphic.GetComponentsInChildren<Graphic>())
+            {
+                childGraphic.CrossFadeAlpha(alpha, duration, ignoreTimeScale);
+            }
+        }
+        
+        public static void CrossFadeColorRecursive(this Graphic graphic, Color color, float duration, bool ignoreTimeScale, bool useAlpha, bool useRGB)
+        {
+            CrossFadeColorRecursive(graphic, (_, _) => color, duration, ignoreTimeScale, useAlpha, useRGB);
+        }
+        
+        
+        public static void CrossFadeColorRecursive(this Graphic graphic, Func<Color, Color, Color> func, float duration, bool ignoreTimeScale, bool useAlpha, bool useRGB)
+        {
+            foreach (var childGraphic in graphic.GetComponentsInChildren<Graphic>())
+            {
+                childGraphic.CrossFadeColor(func(childGraphic.color, childGraphic.canvasRenderer.GetColor()), duration, ignoreTimeScale, useAlpha, useRGB);
+            }
         }
     }
 }

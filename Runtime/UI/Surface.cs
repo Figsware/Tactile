@@ -36,6 +36,7 @@ namespace Tactile.UI
         public Rectangle.CornerRadii corners;
         public float frontDepth = 0.25f;
         public float backDepth = 0.25f;
+        public BoxCollider boxCollider;
 
         public float TLTREdge => 0;
         public float TLBLEdge => 0;
@@ -258,7 +259,12 @@ namespace Tactile.UI
             _surfaceMesh.uv = surfaceMeshPart.uv;
             _surfaceMesh.RecalculateNormals();
             
-            _meshFilter.mesh = _surfaceMesh;
+            GetComponent<MeshFilter>().mesh = _surfaceMesh;
+            
+            if (boxCollider)
+            {
+                boxCollider.size = Size;
+            }
         }
 
         /// <summary>
