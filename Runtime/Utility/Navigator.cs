@@ -8,7 +8,7 @@ namespace Tactile.Utility
         public delegate void ItemChangedHandler(T previousItem, T newItem, bool isForwardsTransition);
 
         public event ItemChangedHandler OnItemChanged;
-        private Stack<T> _stack;
+        private readonly Stack<T> _stack;
         public int Count => _stack.Count;
 
         public Navigator(T firstItem)

@@ -258,6 +258,7 @@ namespace Tactile.UI
             _surfaceMesh.triangles = surfaceMeshPart.triangles;
             _surfaceMesh.uv = surfaceMeshPart.uv;
             _surfaceMesh.RecalculateNormals();
+            _surfaceMesh.RecalculateTangents();
             
             GetComponent<MeshFilter>().mesh = _surfaceMesh;
             
