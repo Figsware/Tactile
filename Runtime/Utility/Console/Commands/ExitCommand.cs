@@ -11,7 +11,7 @@ namespace Tactile.Utility.Console.Commands
         {
         }
 
-        private static void Exit(ExecuteInfo executedCommand)
+        private static void Exit(ExecutionContext executedCommand)
         {
             #if UNITY_EDITOR
             EditorApplication.ExitPlaymode();

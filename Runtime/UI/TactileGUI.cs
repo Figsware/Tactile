@@ -1,16 +1,19 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Linq;
 
 namespace Tactile.UI
 {
     public static class TactileGUI
     {
+        [Obsolete]
         public enum SplitDirection
         {
             Vertical,
             Horizontal
         }
         
+        [Obsolete]
         public static Rect[] SplitRects(this Rect parentRect, SplitDirection direction, float spacing, params float[] sizes)
         {
             Rect[] contentRects = new Rect[sizes.Length];

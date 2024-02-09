@@ -9,7 +9,7 @@ namespace Tactile.Editor.Commands
         {
         }
 
-        private static void Pause(ExecuteInfo command)
+        private static void Pause(ExecutionContext command)
         {
             EditorApplication.isPaused = true;
         }

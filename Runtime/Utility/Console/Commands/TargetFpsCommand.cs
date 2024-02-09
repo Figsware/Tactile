@@ -11,7 +11,7 @@ namespace Tactile.Utility.Console.Commands
         {
         }
 
-        static void SetTargetFPS(ExecuteInfo info)
+        static void SetTargetFPS(ExecutionContext info)
         {
             Application.targetFrameRate = info.Arg1;
         }

@@ -50,7 +50,7 @@ namespace Tactile.Utility.Console
             var methods = AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(a => a.GetTypes()
                     .SelectMany(t => t.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static))
-                    .Where(m => m.GetParameters().Length == 1 && m.GetParameters()[0].ParameterType == typeof(Command.ExecuteInfo))
+                    .Where(m => m.GetParameters().Length == 1 && m.GetParameters()[0].ParameterType == typeof(Command.ExecutionContext))
                     .Where(m => m.GetCustomAttributes(typeof(CommandAttribute), false).Length > 0)
                     .ToArray());
 
@@ -58,7 +58,7 @@ namespace Tactile.Utility.Console
             {
                 var commandAttribute = method.GetCustomAttribute<CommandAttribute>();
 
-                void ExecuteCommand(Command.ExecuteInfo executedCommand)
+                void ExecuteCommand(Command.ExecutionContext executedCommand)
                 {
                     method.Invoke(null, new[] { executedCommand });
                 }

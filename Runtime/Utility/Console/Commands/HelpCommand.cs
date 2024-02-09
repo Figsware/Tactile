@@ -9,7 +9,7 @@ namespace Tactile.Utility.Console.Commands
         {
         }
 
-        private static void ShowHelp(ExecuteInfo executedCommand)
+        private static void ShowHelp(ExecutionContext executedCommand)
         {
             foreach (var command in executedCommand.ExecutingConsole.GetCommands())
             {

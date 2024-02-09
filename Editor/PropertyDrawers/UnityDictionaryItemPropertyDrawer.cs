@@ -3,7 +3,7 @@ using Tactile.Utility;
 using UnityEditor;
 using UnityEngine;
 
-namespace Tactile.Editor
+namespace Tactile.Editor.PropertyDrawers
 {
     [CustomPropertyDrawer(typeof(UnityDictionary<,>.DictionaryItem))]
     public class UnityDictionaryItemPropertyDrawer : PropertyDrawer
@@ -11,7 +11,9 @@ namespace Tactile.Editor
         public override void OnGUI(Rect rect, SerializedProperty property,
             GUIContent label)
         {
-            var keyValueRects = rect.SplitRects(TactileGUI.SplitDirection.Horizontal, 8, 1, 2);
+            var keyValueRects = rect.HorizontalLayout(8f, 
+                RectLayout.Flex(), 
+                RectLayout.Flex(2));
             var keyProp = GetKeyProperty(property);
             var valProp = GetValueProperty(property);
             EditorGUI.PropertyField(keyValueRects[0].OffsetPrefixLabelIndent(), keyProp, GUIContent.none, true);

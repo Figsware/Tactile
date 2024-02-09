@@ -10,9 +10,9 @@ namespace Tactile.Utility.Console
         public readonly string Description;
         public readonly Parameter[] Parameters;
         
-        private Action<ExecuteInfo> executeAction;
+        private Action<ExecutionContext> executeAction;
 
-        public Command(string name, string description, Action<ExecuteInfo> onExecute, params Parameter[] parameters)
+        public Command(string name, string description, Action<ExecutionContext> onExecute, params Parameter[] parameters)
         {
             executeAction = onExecute;
             Name = name;
@@ -37,7 +37,7 @@ namespace Tactile.Utility.Console
             return true;
         }
 
-        protected ExecuteInfo CreateExecuteInfo(Console console, string[] arguments)
+        protected ExecutionContext CreateExecuteInfo(Console console, string[] arguments)
         {
             List<(string name, object value)> parsedArguments = new List<(string name, object value)>();
             bool successful = true;
@@ -74,26 +74,26 @@ namespace Tactile.Utility.Console
 
             if (successful)
             {
-                return new ExecuteInfo(console, parsedArguments.ToArray());
+                return new ExecutionContext(console, parsedArguments.ToArray());
             }
 
             return null;
         }
         
-        public class ExecuteInfo
+        public class ExecutionContext
         {
             public readonly Console ExecutingConsole;
             public readonly (string name, object value)[] Arguments;
             public object this[int index] => Arguments[index].value;
             public object this[string name] => Arguments.First(a => a.name.Equals(name)).value;
 
-            public ExecuteInfo(Console executingConsole, (string name, object value)[] arguments)
+            public ExecutionContext(Console executingConsole, (string name, object value)[] arguments)
             {
                 Arguments = arguments;
                 ExecutingConsole = executingConsole;
             }
 
-            protected ExecuteInfo(ExecuteInfo other)
+            protected ExecutionContext(ExecutionContext other)
             {
                 Arguments = other.Arguments;
                 ExecutingConsole = other.ExecutingConsole;
@@ -107,8 +107,8 @@ namespace Tactile.Utility.Console
             return $"{Name} {parameters}: {description}";
         }
 
-        protected static Action<ExecuteInfo> CreateTypedExecutor<T>(Func<ExecuteInfo, T> converter,
-            Action<T> onExecute) where T: ExecuteInfo
+        protected static Action<ExecutionContext> CreateTypedExecutor<T>(Func<ExecutionContext, T> converter,
+            Action<T> onExecute) where T: ExecutionContext
         {
             return info => onExecute(converter(info));
         }

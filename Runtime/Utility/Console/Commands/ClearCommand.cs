@@ -9,7 +9,7 @@ namespace Tactile.Utility.Console.Commands
         {
         }
 
-        private static void Clear(ExecuteInfo info)
+        private static void Clear(ExecutionContext info)
         {
             info.ExecutingConsole.ClearConsole();
         }

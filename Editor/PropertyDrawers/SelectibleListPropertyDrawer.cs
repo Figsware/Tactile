@@ -1,10 +1,7 @@
-﻿using Tactile.UI;
-using Tactile.Utility;
-using UnityEditor;
-using UnityEditorInternal;
+﻿using UnityEditor;
 using UnityEngine;
 
-namespace Tactile.Editor.CustomEditors
+namespace Tactile.Editor.PropertyDrawers
 {
     // [CustomPropertyDrawer(typeof(SelectableList<>), true)]
     public class SelectableListPropertyDrawer : PropertyDrawer

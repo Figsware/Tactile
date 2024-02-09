@@ -1,11 +1,7 @@
-﻿using System;
-using Tactile.Utility;
-using Tactile.UI;
+﻿using Tactile.Utility;
 using UnityEditor;
-using UnityEditorInternal.Profiling.Memory.Experimental;
-using UnityEngine;
 
-namespace Tactile.Editor
+namespace Tactile.Editor.PropertyDrawers
 {
     [CustomPropertyDrawer(typeof(UnityDictionary<,>))]
     public class UnityDictionaryPropertyDrawer : PropertyDrawer
