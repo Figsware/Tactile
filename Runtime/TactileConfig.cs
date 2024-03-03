@@ -1,6 +1,5 @@
-﻿using System;
-using Tactile.UI.Menu;
-using UnityEngine;
+﻿using UnityEngine;
+using Tactile.UI;
 
 namespace Tactile
 {

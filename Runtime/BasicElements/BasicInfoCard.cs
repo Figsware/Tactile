@@ -1,5 +1,5 @@
 ﻿using System.Collections;
-using Tactile.UI.Menu;
+using Tactile.UI;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;

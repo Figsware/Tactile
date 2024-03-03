@@ -2,7 +2,7 @@
 using UnityEngine;
 using System.Linq;
 
-namespace Tactile.UI.Menu
+namespace Tactile.UI
 {
     public static class TactileGUI
     {

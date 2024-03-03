@@ -1,4 +1,4 @@
-﻿namespace Tactile.UI.Menu.Interfaces
+﻿namespace Tactile.UI
 {
     public interface IButton
     {

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Tactile.UI.Menu
+namespace Tactile.UI
 {
     public interface IScreen
     {

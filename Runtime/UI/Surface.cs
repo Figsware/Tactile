@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Tactile.UI.Menu
+namespace Tactile.UI
 {
     /// <summary>
     /// A surface allows you to create a rounded rectangular prism with specified corner sizes. You can specify both

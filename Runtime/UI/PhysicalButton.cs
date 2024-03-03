@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections;
-using Tactile.UI.Menu.Interfaces;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Tactile.UI.Menu
+namespace Tactile.UI
 {
     public class PhysicalButton : ButtonBase
     {

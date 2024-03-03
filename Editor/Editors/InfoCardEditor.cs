@@ -1,7 +1,4 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Tactile.UI.Menu;
+using Tactile.UI;
 using UnityEditor;
 using UnityEngine;
 

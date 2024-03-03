@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Tactile.UI.Menu
+namespace Tactile.UI
 {
     /// <summary>
     /// A customizable UI progress bar.
