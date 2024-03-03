@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
-namespace Tactile.UI
+namespace Tactile.UI.Menu
 {
     [RequireComponent(typeof(RectTransform))]
     public class Draggable : MonoBehaviour, IDragHandler

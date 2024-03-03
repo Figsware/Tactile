@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Tactile.UI.Builder
+namespace Tactile.UI.Menu.Builder
 {
     public static class Button
     {

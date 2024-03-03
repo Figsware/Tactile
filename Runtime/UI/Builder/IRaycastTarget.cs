@@ -1,4 +1,4 @@
-﻿namespace Tactile.UI.Builder
+﻿namespace Tactile.UI.Menu.Builder
 {
     public interface IRaycastTarget
     {

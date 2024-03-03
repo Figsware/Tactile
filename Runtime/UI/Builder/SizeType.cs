@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Tactile.UI.Builder
+namespace Tactile.UI.Menu.Builder
 {
     public interface ISizeable<T> : ISizeable where T: struct { } 
     public interface ISizeable

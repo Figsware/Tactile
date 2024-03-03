@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
 
-namespace Tactile.UI.Navigation
+namespace Tactile.UI.Menu.Navigation
 {
     [AddComponentMenu("Tactile/UI/Screen")]
     public class Screen : MonoBehaviour, IScreen

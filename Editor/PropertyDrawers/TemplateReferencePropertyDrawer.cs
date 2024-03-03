@@ -1,4 +1,4 @@
-﻿using Tactile.UI;
+﻿using Tactile.UI.Menu;
 using Tactile.Utility;
 using Tactile.Utility.Templates;
 using UnityEditor;

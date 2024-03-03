@@ -32,6 +32,8 @@ namespace Tactile.Utility
             set => SetValue(value);
         }
 
+        public T? GetValueOrDefault() => hasValue ? value : default;
+        
         public void SetValue(T newValue)
         {
             if (newValue == null)

@@ -1,4 +1,4 @@
-﻿namespace Tactile.UI
+﻿namespace Tactile.UI.Menu
 {
     public struct Theme
     {   

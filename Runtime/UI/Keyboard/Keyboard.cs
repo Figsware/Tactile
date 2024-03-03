@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using Tactile.UI;
+using Tactile.UI.Menu;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Tactile.UI.Keyboard
+namespace Tactile.UI.Menu.Keyboard
 {
     public class Keyboard : MonoBehaviour
     {

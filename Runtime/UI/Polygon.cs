@@ -6,7 +6,7 @@ using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Vector2 = UnityEngine.Vector2;
 
-namespace Tactile.UI
+namespace Tactile.UI.Menu
 {
     /// <summary>
     /// A customizable UI circle that can have its radius, segments, and inner diameter

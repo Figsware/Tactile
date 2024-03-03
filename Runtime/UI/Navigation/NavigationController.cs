@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Tactile.UI.Navigation
+namespace Tactile.UI.Menu.Navigation
 {
     public class NavigationController : MonoBehaviour
     {

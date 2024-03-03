@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Tactile.UI.Builder
+namespace Tactile.UI.Menu.Builder
 {
     public struct BoxParameters: ISizeable<BoxParameters>, IViewParameters
     {

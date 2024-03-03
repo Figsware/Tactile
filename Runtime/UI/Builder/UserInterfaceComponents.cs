@@ -3,7 +3,7 @@ using UnityEngine;
 using System.Linq;
 using UnityEngine.UI;
 
-namespace Tactile.UI.Builder
+namespace Tactile.UI.Menu.Builder
 {
     /// <summary>
     /// Provides a bunch of component definitions so that you don't have to keep typing "new" or Create methods.

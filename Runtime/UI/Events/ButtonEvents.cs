@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Tactile.UI.Events
+namespace Tactile.UI.Menu.Events
 {
     public class ButtonEvents : MonoBehaviour
     {

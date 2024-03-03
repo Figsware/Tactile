@@ -4,7 +4,7 @@ using Tactile.Utility;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-namespace Tactile.UI.Keyboard
+namespace Tactile.UI.Menu.Keyboard
 {
     [CreateAssetMenu(fileName = "KeyboardLayout", menuName = "Tactile/Keyboard Layout", order = 0)]
     public class KeyboardLayout : ScriptableObject

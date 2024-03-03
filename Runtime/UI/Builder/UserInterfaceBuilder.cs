@@ -3,7 +3,7 @@ using UnityEngine;
 using System.Linq;
 using UnityEngine.UI;
 
-namespace Tactile.UI.Builder
+namespace Tactile.UI.Menu.Builder
 {
     [AddComponentMenu("Tactile/UI/User Interface Builder")]
     public class UserInterfaceBuilder: MonoBehaviour

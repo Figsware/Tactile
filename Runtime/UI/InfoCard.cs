@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-namespace Tactile.UI
+namespace Tactile.UI.Menu
 {
     /// <summary>
     /// An info card can quickly display information to the user by creating a card in 3D space and populating it with

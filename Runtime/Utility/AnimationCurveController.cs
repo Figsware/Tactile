@@ -14,7 +14,7 @@ namespace Tactile.Utility
     public class AnimationCurveController
     {
         [Tooltip("The current t value")]
-        [SerializeField] private float t;
+        [SerializeField, Range(0,1)] private float t;
         [Tooltip("The duration over which a transition will take place")]
         [SerializeField] private float duration = 1f;
         [Tooltip("The curve that the values will be animated on")]

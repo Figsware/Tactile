@@ -1,10 +1,10 @@
 ﻿using System;
-using Tactile.UI.Interfaces;
+using Tactile.UI.Menu.Interfaces;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace Tactile.UI
+namespace Tactile.UI.Menu
 {
     public class UIEventButton: ButtonBase, IPointerDownHandler, IPointerUpHandler
     {

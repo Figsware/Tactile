@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Tactile.UI.Builder
+namespace Tactile.UI.Menu.Builder
 {
     public class Image<TMessage> : View<TMessage> where TMessage : Message
     {

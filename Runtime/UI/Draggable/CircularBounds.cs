@@ -2,7 +2,7 @@
 using Tactile.Utility;
 using UnityEngine;
 
-namespace Tactile.UI
+namespace Tactile.UI.Menu
 {
     [RequireComponent(typeof(RectTransform))]
     public class CircularBounds : DraggableBounds

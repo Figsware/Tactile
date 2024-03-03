@@ -6,7 +6,7 @@ using UnityEngine.Events;
 using UnityEngine.UI;
 using Logger = Tactile.Utility.Logger;
 
-namespace Tactile.UI.Navigation
+namespace Tactile.UI.Menu.Navigation
 {
     public class TabBar : MonoBehaviour
     {

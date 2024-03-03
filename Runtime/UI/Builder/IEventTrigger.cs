@@ -2,7 +2,7 @@
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
-namespace Tactile.UI.Builder
+namespace Tactile.UI.Menu.Builder
 {
     public interface IEventTrigger<TMessage> where TMessage : Message
     {

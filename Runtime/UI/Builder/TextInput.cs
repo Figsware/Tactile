@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Tactile.UI.Builder
+namespace Tactile.UI.Menu.Builder
 {
     public class TextInput<TMessage> : View<TMessage> where TMessage : Message
     {

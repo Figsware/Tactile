@@ -1,7 +1,7 @@
-﻿using Tactile.UI.Interfaces;
+﻿using Tactile.UI.Menu.Interfaces;
 using UnityEngine;
 
-namespace Tactile.UI
+namespace Tactile.UI.Menu
 {
     public abstract class ButtonBase: MonoBehaviour, IButton
     {

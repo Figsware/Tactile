@@ -7,7 +7,7 @@ using UnityEngine.Events;
 using UnityEngine.UI;
 using Logger = Tactile.Utility.Logger;
 
-namespace Tactile.UI.Keyboard
+namespace Tactile.UI.Menu.Keyboard
 {
     public class KeyboardManager : MonoBehaviour
     {

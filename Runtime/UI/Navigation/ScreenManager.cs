@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Tactile.UI.Navigation
+namespace Tactile.UI.Menu.Navigation
 {
     [AddComponentMenu("Tactile/UI/Screen Manager")]
     public class ScreenManager : MonoBehaviour

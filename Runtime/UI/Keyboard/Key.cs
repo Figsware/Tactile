@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
 
-namespace Tactile.UI.Keyboard
+namespace Tactile.UI.Menu.Keyboard
 {
     public class Key : MonoBehaviour
     {
