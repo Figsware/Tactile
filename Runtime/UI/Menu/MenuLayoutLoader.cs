@@ -10,21 +10,41 @@ namespace Tactile.UI.Menu
         [SerializeField] private MenuStateManager stateManager;
         [SerializeField] private MenuBuilder[] builders;
 
+        [SerializeField] [Tooltip("Whether to build the menu layout on Start()")]
+        private bool buildOnStart = true;
+
         private void Start()
         {
-            if (layout)
+            if (buildOnStart)
             {
-                BuildLayout(layout);
+                BuildLayout();
             }
         }
 
-        public void BuildLayout(MenuLayout newLayout)
+        private void BuildLayout()
         {
-            var items = CreateItems(newLayout.items);
+            if (!layout)
+            {
+                Debug.LogError("Cannot build layout because No menu layout is loaded.");
+                return;
+            }
+
+            var items = CreateItems(layout.items);
             foreach (var menuBuilder in builders)
             {
                 menuBuilder.SetMenuItems(items);
             }
+        }
+
+        /// <summary>
+        /// Builds a new specified layout.
+        /// </summary>
+        /// <param name="newLayout">The new layout to build.</param>
+        public void BuildLayout(MenuLayout newLayout)
+        {
+            if (layout == newLayout) return;
+            layout = newLayout;
+            BuildLayout();
         }
 
         private MenuItem[] CreateItems(MenuLayout.ItemConfig[] configItems)
@@ -39,7 +59,7 @@ namespace Tactile.UI.Menu
                     var subItems = CreateItems(item.subLayout.items);
                     var folder = new MenuFolder(item.style, subItems);
                     menuItems[i] = folder;
-                }  
+                }
                 else
                 {
                     var state = stateManager.CreateOrRetrieveState(item.stateKey);
