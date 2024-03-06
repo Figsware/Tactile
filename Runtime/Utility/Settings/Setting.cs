@@ -25,6 +25,11 @@ namespace Tactile.Utility.Settings
 
         public void SetValue(T newValue)
         {
+            if (EqualityComparer<T>.Default.Equals(newValue, value)) return;
+            
+            value = newValue;
+            onValueChange?.Invoke(value);
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(value)));
         }
 
         public void AddChangeListener(UnityAction<T> action)
@@ -40,6 +45,8 @@ namespace Tactile.Utility.Settings
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            if (propertyName == nameof(value))
+                onValueChange?.Invoke(value);
         }
 
         protected bool SetField<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
