@@ -1,6 +1,4 @@
-﻿using System;
-using Codice.Client.BaseCommands.Annotate;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Tactile.UI.Menu
 {
