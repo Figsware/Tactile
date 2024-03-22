@@ -40,7 +40,6 @@ namespace Tactile.UI.Menu
         /// <param name="newLayout">The new layout to build.</param>
         public void BuildLayout(MenuLayout newLayout)
         {
-            if (layout == newLayout) return;
             layout = newLayout;
             BuildLayout();
         }
