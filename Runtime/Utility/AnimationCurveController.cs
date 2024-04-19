@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
 
-namespace Tactile.Utility.Logging
+namespace Tactile.Utility
 {
     /// <summary>
     /// An animation curve controller allows you to animate a value along a curve over time, as well as being able to
