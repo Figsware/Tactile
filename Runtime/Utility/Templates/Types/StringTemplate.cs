@@ -1,4 +1,4 @@
-﻿namespace Tactile.Utility.Templates.Types
+﻿namespace Tactile.Utility.Logging.Templates.Types
 {
     public class StringTemplate: Template<string>
     {

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Tactile.Utility.Templates.Types
+namespace Tactile.Utility.Logging.Templates.Types
 {
     public class AudioTemplate: Template<AudioClip>
     {

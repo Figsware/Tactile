@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Tactile.Utility.Console.Parameters
+namespace Tactile.Utility.Logging.Console.Parameters
 {
     public class FilePathParameter : Parameter<string>
     {

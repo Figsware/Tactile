@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Tactile.Utility
+namespace Tactile.Utility.Logging
 {
     public class Finder<T> where T: Component
     {

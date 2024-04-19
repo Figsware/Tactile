@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Tactile.Utility.Templates.Types
+namespace Tactile.Utility.Logging.Templates.Types
 {
     
     [AddComponentMenu("Tactile/Templates/Color/Color Template")]

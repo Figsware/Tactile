@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Tactile.Editor.Utility.PropertyShelves;
-using Tactile.Utility.Folder;
+using Tactile.Utility.Logging.Folder;
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;

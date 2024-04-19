@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Tactile.Utility.Console.Parameters
+namespace Tactile.Utility.Logging.Console.Parameters
 {
     public class FloatParameter : Parameter<float>
     {

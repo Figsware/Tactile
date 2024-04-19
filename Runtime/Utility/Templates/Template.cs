@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace Tactile.Utility.Templates
+namespace Tactile.Utility.Logging.Templates
 {
     public abstract partial class Template<T> : MonoBehaviour, IReadOnlyDictionary<string, T>
     {

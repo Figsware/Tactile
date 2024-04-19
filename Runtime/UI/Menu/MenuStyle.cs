@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using Tactile.Utility;
-using Tactile.Utility.Templates;
+using Tactile.Utility.Logging;
+using Tactile.Utility.Logging.Templates;
 using UnityEngine;
 using UnityEngine.UI;
 using Component = UnityEngine.Component;
@@ -14,14 +14,14 @@ namespace Tactile.UI.Menu
     public class MenuStyle : INotifyPropertyChanged
     {
         [Header("Text")] [SerializeField] private string name;
+        [SerializeField] private Texture icon;
         [SerializeField, TextArea] private string description;
-        [Header("Icons")] [SerializeField] private Texture icon;
-        [Header("Color")] [SerializeField] private UnityNullable<Template<Color>.Reference> color;
-        [SerializeField] private UnityNullable<Template<Color>.Reference> normalColor;
-        [SerializeField] private UnityNullable<Template<Color>.Reference> highlightedColor;
-        [SerializeField] private UnityNullable<Template<Color>.Reference> pressedColor;
-        [SerializeField] private UnityNullable<Template<Color>.Reference> selectedColor;
-        [SerializeField] private UnityNullable<Template<Color>.Reference> disabledColor;
+        [Header("Color")] [SerializeField] private UnityNullable<KeyReference<Color>> color;
+        [SerializeField] private UnityNullable<KeyReference<Color>> normalColor;
+        [SerializeField] private UnityNullable<KeyReference<Color>> highlightedColor;
+        [SerializeField] private UnityNullable<KeyReference<Color>> pressedColor;
+        [SerializeField] private UnityNullable<KeyReference<Color>> selectedColor;
+        [SerializeField] private UnityNullable<KeyReference<Color>> disabledColor;
 
         public string Name
         {
@@ -41,12 +41,12 @@ namespace Tactile.UI.Menu
             set => SetField(ref icon, value);
         }
 
-        public Template<Color>.Reference Color => color.GetValueOrDefault();
-        public Template<Color>.Reference NormalColor => normalColor.GetValueOrDefault();
-        public Template<Color>.Reference HighlightedColor => highlightedColor.GetValueOrDefault();
-        public Template<Color>.Reference PressedColor => pressedColor.GetValueOrDefault();
-        public Template<Color>.Reference SelectedColor => selectedColor.GetValueOrDefault();
-        public Template<Color>.Reference DisabledColor => disabledColor.GetValueOrDefault();
+        public KeyReference<Color> Color => color.GetValueOrDefault();
+        public KeyReference<Color> NormalColor => normalColor.GetValueOrDefault();
+        public KeyReference<Color> HighlightedColor => highlightedColor.GetValueOrDefault();
+        public KeyReference<Color> PressedColor => pressedColor.GetValueOrDefault();
+        public KeyReference<Color> SelectedColor => selectedColor.GetValueOrDefault();
+        public KeyReference<Color> DisabledColor => disabledColor.GetValueOrDefault();
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -55,7 +55,7 @@ namespace Tactile.UI.Menu
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        protected void SetNullableTemplateItemValueField<T>(ref UnityNullable<Template<T>.Reference> unityNullable,
+        protected void SetNullableTemplateItemValueField<T>(ref UnityNullable<KeyReference<T>> unityNullable,
             T? value,
             [CallerMemberName] string propertyName = null)
             where T : struct
@@ -77,19 +77,19 @@ namespace Tactile.UI.Menu
             var newBlock = block;
 
             if (NormalColor is { } normalColor)
-                newBlock.normalColor = normalColor.GetValue(component);
+                newBlock.normalColor = normalColor.GetTemplateValue(component);
 
             if (HighlightedColor is { } highlightedColor)
-                newBlock.highlightedColor = highlightedColor.GetValue(component);
+                newBlock.highlightedColor = highlightedColor.GetTemplateValue(component);
 
             if (PressedColor is { } pressedColor)
-                newBlock.pressedColor = pressedColor.GetValue(component);
+                newBlock.pressedColor = pressedColor.GetTemplateValue(component);
 
             if (SelectedColor is { } selectedColor)
-                newBlock.selectedColor = selectedColor.GetValue(component);
+                newBlock.selectedColor = selectedColor.GetTemplateValue(component);
 
             if (DisabledColor is { } disabledColor)
-                newBlock.disabledColor = disabledColor.GetValue(component);
+                newBlock.disabledColor = disabledColor.GetTemplateValue(component);
 
             return newBlock;
         }

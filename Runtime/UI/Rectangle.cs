@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.UIElements;
 
 namespace Tactile.UI
 {
@@ -17,6 +16,7 @@ namespace Tactile.UI
     {
         [SerializeField, Min(2)] private int cornerVertices = 3;
         [SerializeField] private CornerRadii corners;
+        [SerializeField] private bool useNormalizedUV = true;
 
         public CornerRadii Corners
         {
@@ -59,11 +59,12 @@ namespace Tactile.UI
             vh.AddTriangle(bottomLeft, topRight, bottomRight);
         }
 
-        protected UIVertex GetUICorner((bool, bool) corner)
+        protected UIVertex GetNonRoundedUICorner((bool, bool) corner)
         {
             UIVertex uiv = UIVertex.simpleVert;
             uiv.color = color;
             uiv.position = GetCorner(corner);
+            uiv.uv0 = useNormalizedUV ? new Vector4(corner.Item1 ? 0 : 1, corner.Item2 ? 0 : 1) : uiv.position;
             
             return uiv;
         }
@@ -87,15 +88,15 @@ namespace Tactile.UI
                 float width = Mathf.Min(cornerSize, rect.width / 2f) * (corner.Item1 ? 1 : -1);
                 float height = Mathf.Min(cornerSize, rect.height / 2f) * (corner.Item2 ? 1 : -1);
                 Vector2 origin = GetCorner(corner) - new Vector2(width, height);
+                
                 return CreateCorner(vh, width, height, origin);
             }
-            else
-            {
-                int vertexIndex = vh.currentVertCount;
-                vh.AddVert(GetUICorner(corner));
-                return (vertexIndex, vertexIndex, vertexIndex);
-            }
-           
+
+            int vertexIndex = vh.currentVertCount;
+            vh.AddVert(GetNonRoundedUICorner(corner));
+            
+            return (vertexIndex, vertexIndex, vertexIndex);
+            
         }
 
         protected (int, int, int) CreateCorner(VertexHelper vh, float width, float height, Vector2 origin)
@@ -114,6 +115,7 @@ namespace Tactile.UI
             {
                 UIVertex uiv = UIVertex.simpleVert;
                 uiv.position = Vector2.Scale(verts[i], scaleVector) + origin;
+                uiv.uv0 = useNormalizedUV ? verts[i] + origin : uiv.position;
                 uiv.color = color;
                 vh.AddVert(uiv);
             }

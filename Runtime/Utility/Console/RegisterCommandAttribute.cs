@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Tactile.Utility.Console
+namespace Tactile.Utility.Logging.Console
 {
     public class RegisterCommandAttribute : Attribute
     {

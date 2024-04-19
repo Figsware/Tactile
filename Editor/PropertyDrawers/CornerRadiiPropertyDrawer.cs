@@ -1,5 +1,5 @@
 ﻿using Tactile.UI;
-using Tactile.Utility;
+using Tactile.Utility.Logging;
 using UnityEditor;
 using UnityEngine;
 

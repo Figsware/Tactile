@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
-using Logger = Tactile.Utility.Logger;
+using Logger = Tactile.Utility.Logging.Logger;
 
 namespace Tactile.UI.Menu.Keyboard
 {
@@ -96,7 +96,7 @@ namespace Tactile.UI.Menu.Keyboard
                 StopRepeatKey();
             }
             
-            _logger.Log($"Key: {key}, Pressed: {pressed}");
+            _logger.Info($"Key: {key}, Pressed: {pressed}");
         }
 
         public void ToggleModifier(Modifier modifier)
@@ -119,7 +119,7 @@ namespace Tactile.UI.Menu.Keyboard
         public void Paste()
         {
             var pasteText = GUIUtility.systemCopyBuffer;
-            _logger.Log("Pasting: " + pasteText);
+            _logger.Info("Pasting: " + pasteText);
             InsertText(pasteText);
         }
 
@@ -151,7 +151,7 @@ namespace Tactile.UI.Menu.Keyboard
             if (repeatInterval > 0)
             {
                 yield return new WaitForSeconds(repeatDelay);
-                _logger.Log($"Repeating key: {key}");
+                _logger.Info($"Repeating key: {key}");
                 while (true)
                 {
                     ModifyTargetWithKey(key);

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Tactile.Utility.Console.Commands
+namespace Tactile.Utility.Logging.Console.Commands
 {
     [RegisterCommand]
     public class ClearCommand: Command

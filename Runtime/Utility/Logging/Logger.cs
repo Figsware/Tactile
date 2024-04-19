@@ -1,29 +1,29 @@
 ﻿using UnityEngine;
 
-namespace Tactile.Utility
+namespace Tactile.Utility.Logging
 {
     public class Logger
     {
         public string Header;
-        private Object _context;
+        private readonly Object _context;
 
         public Logger(Object context)
         {
             _context = context;
             Header = MakeBracketHeader(context.name);
         }
-        
-        public void Log(object content)
+
+        public void Info(object content)
         {
             Debug.Log(MakeLogMessage(content), _context);
         }
 
-        public void LogWarning(object content)
+        public void Warning(object content)
         {
             Debug.LogWarning(MakeLogMessage(content), _context);
         }
 
-        public void LogError(object content)
+        public void Error(object content)
         {
             Debug.LogError(MakeLogMessage(content), _context);
         }

@@ -5,17 +5,25 @@ using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Tactile.Utility.Settings
+namespace Tactile.Utility.Logging.Settings
 {
     [Serializable]
     public class Setting<T> : INotifyPropertyChanged, ISettingChangedNotifier
     {
         [SerializeField] private T value;
-        [SerializeField] private UnityEvent<T> onValueChange;
-
-        public delegate void SettingChangedHandler(T newValue);
+        [SerializeField] private UnityEvent<T> onValueChange = new();
         
         public event PropertyChangedEventHandler PropertyChanged;
+        
+        public Setting()
+        {
+            value = default;
+        }
+
+        public Setting(T initialValue)
+        {
+            value = initialValue;
+        }
 
         public T Value
         {

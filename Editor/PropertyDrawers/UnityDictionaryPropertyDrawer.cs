@@ -1,4 +1,4 @@
-﻿using Tactile.Utility;
+﻿using Tactile.Utility.Logging;
 using UnityEditor;
 
 namespace Tactile.Editor.PropertyDrawers

@@ -2,7 +2,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace Tactile.Utility.Console.Commands
+namespace Tactile.Utility.Logging.Console.Commands
 {
     [RegisterCommand]
     public class ExitCommand: Command

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Tactile.Utility;
+using Tactile.Utility.Logging;
 using UnityEditor;
 using UnityEngine;
 

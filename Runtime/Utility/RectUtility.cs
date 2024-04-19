@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace Tactile.Utility
+namespace Tactile.Utility.Logging
 {
     public abstract record RectLayout
     {
@@ -151,5 +151,8 @@ namespace Tactile.Utility
         public static Rect PaddingRight(this Rect rect, float padding) => Padding(rect, 0, 0, 0, padding);
         public static Rect PaddingVertical(this Rect rect, float padding) => Padding(rect, padding, padding, 0, 0);
         public static Rect PaddingHorizontal(this Rect rect, float padding) => Padding(rect, 0, 0, padding, padding);
+
+        public static float GetArea(this Rect rect) => rect.width * rect.height;
+        public static float GetPerimeter(this Rect rect) => 2 * (rect.width + rect.height);
     }
 }

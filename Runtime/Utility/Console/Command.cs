@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Tactile.Utility.Console
+namespace Tactile.Utility.Logging.Console
 {
     public class Command
     {

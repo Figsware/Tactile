@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Tactile.Utility.Browser
+namespace Tactile.Utility.Logging.Browser
 {
     public interface IBrowser
     {

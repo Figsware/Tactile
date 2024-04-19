@@ -1,5 +1,5 @@
 ﻿using System;
-using Tactile.Utility;
+using Tactile.Utility.Logging;
 using UnityEngine;
 
 namespace Tactile.UI.Menu

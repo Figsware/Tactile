@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 
-namespace Tactile.Utility.Console.Parameters
+namespace Tactile.Utility.Logging.Console.Parameters
 {
     public class StringParameter: Parameter<string>
     {

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Tactile.Utility
+namespace Tactile.Utility.Logging
 {
     /// <summary>
     /// An arrow points to objects within the game world. It can oscillate back and forth to grab the user's attention.

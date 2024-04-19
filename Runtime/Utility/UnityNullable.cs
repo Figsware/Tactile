@@ -2,7 +2,7 @@
 using System;
 using UnityEngine;
 
-namespace Tactile.Utility
+namespace Tactile.Utility.Logging
 {
     [Serializable]
     public class UnityNullable<T>
