@@ -1,20 +1,14 @@
-﻿using System;
-using UnityEngine;
-using UnityEngine.Serialization;
+﻿using UnityEngine;
 
 namespace Tactile.UI.Menu
 {
-    [CreateAssetMenu(fileName = "Menu", menuName = "Tactile/Action Menu")]
-    public class MenuLayout : ScriptableObject
+    /// <summary>
+    /// A Menu Layout is a Scriptable Object that facilitates the creation of menu objects. Note that, if you are trying
+    /// to create menus from software, there is no need to programatically create a menu layout scriptable object.
+    /// Instead, you should create the MenuObjects directly.
+    /// </summary>
+    public abstract class MenuLayout : ScriptableObject
     {
-        public ItemConfig[] items;
-        
-        [Serializable]
-        public class ItemConfig
-        {
-            [SerializeField] public MenuStyle style;
-            [SerializeField] public MenuLayout subLayout;
-            [SerializeField] public string stateKey;
-        }
+        public abstract MenuObject[] GetMenuObjects();
     }
 }

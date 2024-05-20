@@ -7,6 +7,7 @@ using Tactile.Utility;
 using Tactile.Utility.Templates;
 using UnityEngine;
 using UnityEngine.UI;
+using Object = UnityEngine.Object;
 
 namespace Tactile
 {

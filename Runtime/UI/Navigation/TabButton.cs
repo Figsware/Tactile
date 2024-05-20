@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Tactile.UI.Menu.Navigation
+namespace Tactile.UI.Navigation
 {
     public class TabButton : MonoBehaviour
     {

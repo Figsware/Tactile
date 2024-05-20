@@ -15,7 +15,7 @@ namespace Tactile.Utility.Console
 
         private Dictionary<string, Command> _commands = new Dictionary<string, Command>();
         private string _consoleText = string.Empty;
-        private static Regex CommandRegex = new Regex(@"(?:""((?:\\""|[^""])+)""|((?:\\""|[^\s""])+))");
+        private static Regex CommandRegex = new (@"(?:""((?:\\""|[^""])+)""|((?:\\""|[^\s""])+))");
 
         protected string ConsoleText
         {

@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.XR.Management;
@@ -99,13 +99,11 @@ namespace Tactile.XR
         /// <seealso href="https://docs.unity3d.com/Packages/com.unity.xr.management@4.2/manual/EndUser.html"/>
         private void StopXR()
         {
-            if (XRGeneralSettings.Instance.Manager.activeLoader != null)
-            {
-                Debug.Log("Stopping XR...");
+            if (XRGeneralSettings.Instance.Manager.activeLoader == null) return;
+            Debug.Log("Stopping XR...");
 
-                XRGeneralSettings.Instance.Manager.StopSubsystems();
-                OnXRStatusChanged.Invoke(false);
-            }
+            XRGeneralSettings.Instance.Manager.StopSubsystems();
+            OnXRStatusChanged.Invoke(false);
         }
 
         public static bool IsXRInitialized()
@@ -134,12 +132,12 @@ namespace Tactile.XR
 
         public static XROverrideMode GetXROverrideMode()
         {
-            return (XROverrideMode)UnityEditor.EditorPrefs.GetInt(XREnabledKey, (int)XROverrideMode.Default);
+            return (XROverrideMode)EditorPrefs.GetInt(XREnabledKey, (int)XROverrideMode.Default);
         }
 
         public static void SetXROverrideMode(XROverrideMode newMode)
         {
-            UnityEditor.EditorPrefs.SetInt(XREnabledKey, (int)newMode);
+            EditorPrefs.SetInt(XREnabledKey, (int)newMode);
         }
 #endif
 

@@ -43,7 +43,7 @@ namespace Tactile.Gadgets
                 
                 // Console text
                 _scrollVector = GUILayout.BeginScrollView(_scrollVector);
-
+                
                 GUILayout.Label(console.GetConsoleText(), consoleTextStyle, GUILayout.ExpandHeight(true));
                 GUILayout.EndScrollView();
                 

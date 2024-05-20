@@ -1,12 +1,8 @@
-﻿
-using System;
-using TMPro;
-using UnityEngine;
-using UnityEngine.Events;
+﻿using UnityEngine;
 using UnityEngine.UI;
-using Logger = Tactile.Utility.Logger;
+using Logger = Tactile.Utility.Logging.Logger;
 
-namespace Tactile.UI.Menu.Navigation
+namespace Tactile.UI.Navigation
 {
     public class TabBar : MonoBehaviour
     {
@@ -41,7 +37,7 @@ namespace Tactile.UI.Menu.Navigation
             }
             else
             {
-                _logger.LogError($"Tried to select tab with index {index} that doesn't exist!");
+                _logger.Error($"Tried to select tab with index {index} that doesn't exist!");
             }
         }
 
