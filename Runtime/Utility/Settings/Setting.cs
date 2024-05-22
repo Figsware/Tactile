@@ -11,7 +11,7 @@ namespace Tactile.Utility.Settings
     public class Setting<T> : INotifyPropertyChanged, ISettingChangedNotifier
     {
         [SerializeField] private T value;
-        [SerializeField] private UnityEvent<T> onValueChange;
+        [SerializeField] private UnityEvent<T> onValueChange = new();
 
         public delegate void SettingChangedHandler(T newValue);
         
