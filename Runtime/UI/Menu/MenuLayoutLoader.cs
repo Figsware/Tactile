@@ -27,27 +27,10 @@ namespace Tactile.UI.Menu
                 return;
             }
 
-            var menuObjects = layout.GetMenuObjects();
-            AddMenuState(menuObjects);
+            var items = CreateItems(layout.items);
             foreach (var menuBuilder in builders)
             {
-                menuBuilder.SetMenuObjects(menuObjects);
-            }
-        }
-
-        private void AddMenuState(MenuObject[] menuObjects)
-        {
-            foreach (var obj in menuObjects)
-            {
-                switch (obj)
-                {
-                    case MenuItem item:
-                        stateManager.AddState(item.State);
-                        break;
-                    case MenuFolder folder:
-                        AddMenuState(folder.Items);
-                        break;
-                }
+                menuBuilder.SetMenuItems(items);
             }
         }
 
@@ -57,9 +40,31 @@ namespace Tactile.UI.Menu
         /// <param name="newLayout">The new layout to build.</param>
         public void BuildLayout(MenuLayout newLayout)
         {
-            if (layout == newLayout) return;
             layout = newLayout;
             BuildLayout();
+        }
+
+        private MenuItem[] CreateItems(MenuLayout.ItemConfig[] configItems)
+        {
+            var menuItems = new MenuItem[configItems.Length];
+
+            for (var i = 0; i < configItems.Length; i++)
+            {
+                var item = configItems[i];
+                if (item.subLayout)
+                {
+                    var subItems = CreateItems(item.subLayout.items);
+                    var folder = new MenuFolder(item.style, subItems);
+                    menuItems[i] = folder;
+                }
+                else
+                {
+                    var state = stateManager.CreateOrRetrieveState(item.stateKey);
+                    menuItems[i] = new MenuAction(item.style, state);
+                }
+            }
+
+            return menuItems;
         }
     }
 }

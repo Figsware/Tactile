@@ -1,6 +1,5 @@
 ﻿using System;
 using Tactile.Utility;
-using Tactile.Utility.Templates;
 using UnityEditor;
 using UnityEngine;
 
@@ -8,16 +7,17 @@ namespace Tactile.UI.Menu
 {
     public class IMGUIMenuBuilder : MenuBuilder
     {
-        private Navigator<MenuObject[]> currentItems;
+        private Navigator<MenuItem[]> currentItems;
 
 
         private void Awake()
         {
+          
         }
 
-        public override void SetMenuObjects(MenuObject[] newMenuObjects)
+        public override void SetMenuItems(MenuItem[] newMenuItems)
         {
-            currentItems = new Navigator<MenuObject[]>(newMenuObjects);
+            currentItems = new Navigator<MenuItem[]>(newMenuItems);
         }
 
         private void OnGUI()
@@ -30,23 +30,19 @@ namespace Tactile.UI.Menu
             foreach (var item in items)
             {
                 var prevColor = GUI.backgroundColor;
-
+                
                 if (item.Style.Color != null)
-                    GUI.backgroundColor = item.Style.Color.GetTemplateValue(this);
-
-                if (item is MenuFolder folder && GUILayout.Button(item.Style.Name))
+                    GUI.backgroundColor = item.Style.Color.GetValue(this);
+                
+                if (GUILayout.Button(item.Style.Name))
                 {
-                    currentItems.Push(folder.Items);
-                }
-
-                if (item is MenuItem stateItem)
-                {
-                    GUI.enabled = !stateItem.State.Disabled;
-                    switch (stateItem.State)
+                    switch (item)
                     {
-                        case MenuActionState actionState:
-                            if (GUILayout.Button(item.Style.Name))
-                                actionState.Invoke();
+                        case MenuFolder folder:
+                            currentItems.Push(folder.Items);
+                            break;
+                        case MenuAction action:
+                            action.State.Invoke();
                             break;
                     }
                 }
@@ -62,7 +58,6 @@ namespace Tactile.UI.Menu
                     currentItems.Pop();
                 }
             }
-
             GUILayout.EndVertical();
         }
     }

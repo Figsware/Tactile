@@ -1,26 +1,34 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Serialization;
 
 namespace Tactile.UI.Menu
 {
     public class MenuStateManager : MonoBehaviour
     {
-        public UnityEvent<string> OnActionInvoke;
-        private Dictionary<string, MenuState> _states = new();
+        [Tooltip("Called when any state gets invoked.")]
+        public UnityEvent<string> OnStateKeyInvoke;
 
-        public void AddState(MenuState state)
+        public List<MenuState> states;
+
+        public MenuState CreateOrRetrieveState(string key)
         {
-            if (state is MenuActionState actionState)
+            var existingState = states.FirstOrDefault(s => s.key == key);
+            if (existingState != null)
+                return existingState;
+
+            var newState = new MenuState()
             {
-                actionState.OnActionInvoke += () => OnActionInvoke.Invoke(state.Key);
-            }
+                key = key
+            };
             
-            _states[state.Key] = state;
+            // Add a listener that will forward the invoke event.
+            newState.onStateInvoke.AddListener(() => OnStateKeyInvoke.Invoke(key));
+            
+            states.Add(newState);
+
+            return newState;
         }
     }
 }

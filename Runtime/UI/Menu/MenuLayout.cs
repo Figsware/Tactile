@@ -1,9 +1,20 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Tactile.UI.Menu
 {
-    public abstract class MenuLayout : ScriptableObject
+    [CreateAssetMenu(fileName = "Menu", menuName = "Tactile/Action Menu")]
+    public class MenuLayout : ScriptableObject
     {
-        public abstract MenuObject[] GetMenuObjects();
+        public ItemConfig[] items;
+        
+        [Serializable]
+        public class ItemConfig
+        {
+            [SerializeField] public MenuStyle style;
+            [SerializeField] public MenuLayout subLayout;
+            [SerializeField] public string stateKey;
+        }
     }
 }

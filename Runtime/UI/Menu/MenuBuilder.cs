@@ -4,8 +4,8 @@ using UnityEngine;
 
 namespace Tactile.UI.Menu
 {
-    public abstract class MenuBuilder : MonoBehaviour
+    public abstract class MenuBuilder : MonoBehaviour, IMenuBuilder
     {
-        public abstract void SetMenuObjects(MenuObject[] newMenuObjects);
+        public abstract void SetMenuItems(MenuItem[] newMenuItems);
     }
 }
