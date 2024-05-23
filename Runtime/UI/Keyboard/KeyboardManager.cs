@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
-using Logger = Tactile.Utility.Logger;
+using Logger = Tactile.Utility.Logging.Logger;
 
 namespace Tactile.UI.Menu.Keyboard
 {
