@@ -1,8 +1,8 @@
 ﻿using System;
 using UnityEngine;
-using Tactile.Utility.Logging.Console.Parameters;
+using Tactile.Utility.Console.Parameters;
 
-namespace Tactile.Utility.Logging.Console.Commands
+namespace Tactile.Utility.Console.Commands
 {
     [RegisterCommand]
     public class TargetFpsCommand : Command<int>

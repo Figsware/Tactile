@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Tactile.Utility.Logging.Settings
+namespace Tactile.Utility.Settings
 {
     [Serializable]
     public class Setting<T> : INotifyPropertyChanged, ISettingChangedNotifier

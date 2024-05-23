@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Tactile.Utility.Logging.Console.Commands
+namespace Tactile.Utility.Console.Commands
 {
     [RegisterCommand]
     public class HelpCommand: Command

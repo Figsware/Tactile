@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Tactile.Utility.Logging
+namespace Tactile.Utility
 {
     [Serializable]
     public class KeyReference<T>

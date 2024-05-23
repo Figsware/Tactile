@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Tactile.Utility.Logging.Console.Parameters
+namespace Tactile.Utility.Console.Parameters
 {
     public class IntegerParameter : Parameter<int>
     {

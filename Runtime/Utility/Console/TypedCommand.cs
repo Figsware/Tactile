@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Tactile.Utility.Logging.Console
+namespace Tactile.Utility.Console
 {
     public class Command<TFirst> : Command
     {

@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Tactile.Utility.Logging.Console
+namespace Tactile.Utility.Console
 {
     public class Console : MonoBehaviour
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Tactile.Utility.Logging.Browser
+namespace Tactile.Utility.Browser
 {
     /// <summary>
     /// Represents an item within a browser.

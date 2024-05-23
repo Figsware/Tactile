@@ -1,5 +1,5 @@
 ﻿using Tactile.UI;
-using Tactile.Utility.Logging;
+using Tactile.Utility;
 using UnityEngine;
 
 namespace Tactile

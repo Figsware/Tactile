@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
-using Logger = Tactile.Utility.Logging.Logger;
+using Logger = Tactile.Utility.Logger;
 
 namespace Tactile.UI.Menu.Navigation
 {

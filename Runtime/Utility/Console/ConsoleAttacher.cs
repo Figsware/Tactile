@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Tactile.Utility.Logging.Console
+namespace Tactile.Utility.Console
 {
     public abstract class ConsoleAttacher : MonoBehaviour
     {

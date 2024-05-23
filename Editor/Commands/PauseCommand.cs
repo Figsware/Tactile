@@ -1,4 +1,4 @@
-﻿using Tactile.Utility.Logging.Console;
+﻿using Tactile.Utility.Console;
 using UnityEditor;
 
 namespace Tactile.Editor.Commands

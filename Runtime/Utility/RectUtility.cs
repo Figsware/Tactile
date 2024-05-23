@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace Tactile.Utility.Logging
+namespace Tactile.Utility
 {
     public abstract record RectLayout
     {

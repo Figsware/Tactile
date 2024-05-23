@@ -1,5 +1,5 @@
 ﻿using System;
-using Tactile.Utility.Logging.Settings;
+using Tactile.Utility.Settings;
 using UnityEngine;
 using UnityEngine.Events;
 

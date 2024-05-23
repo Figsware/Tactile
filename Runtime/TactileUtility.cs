@@ -3,8 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Tactile.Utility.Logging;
-using Tactile.Utility.Logging.Templates;
+using Tactile.Utility;
+using Tactile.Utility.Templates;
 using UnityEngine;
 using UnityEngine.UI;
 

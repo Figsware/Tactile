@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Tactile.Utility.Logging
+namespace Tactile.Utility
 {
     public class Navigator<T> : INavigator<T>
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Tactile.Utility.Logging;
+using Tactile.Utility;
 using UnityEngine;
 using UnityEngine.Serialization;
 

@@ -1,4 +1,4 @@
-﻿namespace Tactile.Utility.Logging
+﻿namespace Tactile.Utility
 {
     public interface INavigator<T>
     {

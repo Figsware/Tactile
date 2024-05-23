@@ -2,7 +2,7 @@
 using System;
 using UnityEngine;
 
-namespace Tactile.Utility.Logging
+namespace Tactile.Utility
 {
     [Serializable]
     public class UnityNullableValue<T> : UnityNullable<T> where T : struct

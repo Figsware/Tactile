@@ -1,6 +1,6 @@
 ﻿using Tactile.Editor.Utility.PropertyShelves;
-using Tactile.Utility.Logging;
-using Tactile.Utility.Logging.Settings;
+using Tactile.Utility;
+using Tactile.Utility.Settings;
 using UnityEditor;
 using UnityEngine;
 

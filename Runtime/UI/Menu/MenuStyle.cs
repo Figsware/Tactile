@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using Tactile.Utility.Logging;
-using Tactile.Utility.Logging.Templates;
+using Tactile.Utility;
+using Tactile.Utility.Templates;
 using UnityEngine;
 using UnityEngine.UI;
 using Component = UnityEngine.Component;

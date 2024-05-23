@@ -1,6 +1,6 @@
 ﻿using System;
-using Tactile.Utility.Logging;
-using Tactile.Utility.Logging.Templates;
+using Tactile.Utility;
+using Tactile.Utility.Templates;
 using UnityEditor;
 using UnityEngine;
 

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine.Serialization;
 
-namespace Tactile.Utility.Logging.Folder
+namespace Tactile.Utility.Folder
 {
     [Serializable]
     public class Folder<TDirectory, TFile>

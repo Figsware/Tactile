@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Tactile.Utility.Logging.Templates
+namespace Tactile.Utility.Templates
 {
     public static class TactileTemplateUtility
     {

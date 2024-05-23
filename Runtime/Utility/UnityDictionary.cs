@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 
-namespace Tactile.Utility.Logging
+namespace Tactile.Utility
 {
     /// <summary>
     /// A unity dictionary can be configured within the editor and referred to as a readonly

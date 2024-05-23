@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-namespace Tactile.Utility.Logging
+namespace Tactile.Utility
 {
     /// <summary>
     /// A cancel token allows you to interrupt an executing coroutine and gracefully let it finish. You can also use it
