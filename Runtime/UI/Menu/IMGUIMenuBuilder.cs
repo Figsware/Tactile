@@ -32,7 +32,7 @@ namespace Tactile.UI.Menu
                 var prevColor = GUI.backgroundColor;
                 
                 if (item.Style.Color != null)
-                    GUI.backgroundColor = item.Style.Color.GetValue(this);
+                    GUI.backgroundColor = item.Style.Color.GetTemplateValue(this);
                 
                 if (GUILayout.Button(item.Style.Name))
                 {
