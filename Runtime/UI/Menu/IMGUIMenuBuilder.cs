@@ -1,5 +1,6 @@
 ﻿using System;
 using Tactile.Utility;
+using Tactile.Utility.Templates;
 using UnityEditor;
 using UnityEngine;
 
