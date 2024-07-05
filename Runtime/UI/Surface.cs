@@ -37,11 +37,6 @@ namespace Tactile.UI
         public float frontDepth = 0.25f;
         public float backDepth = 0.25f;
         public BoxCollider boxCollider;
-
-        public float TLTREdge => 0;
-        public float TLBLEdge => 0;
-        public float TRBREdge => 0;
-        public float BLBREdge => 0;
         [SerializeField] private int cornerVertices = 3;
 
         private Mesh _surfaceMesh;
@@ -113,7 +108,7 @@ namespace Tactile.UI
         private void Awake()
         {
             _meshFilter = GetComponent<MeshFilter>();
-
+            AddSurfaceToMeshFilter();
             BuildSurface();
         }
 
@@ -128,9 +123,19 @@ namespace Tactile.UI
             BuildSurface();
         }
 
+        private void AddSurfaceToMeshFilter()
+        {
+            if (!_surfaceMesh)
+            {
+                _surfaceMesh = new Mesh();
+                _meshFilter.mesh = _surfaceMesh;
+            }
+        }
+
         private void BuildSurface()
         {
-            _surfaceMesh = new Mesh();
+            AddSurfaceToMeshFilter();
+            
             _surfaceMesh.subMeshCount = 6;
             _surfaceMesh.name = "Surface Mesh";
 
@@ -259,8 +264,6 @@ namespace Tactile.UI
             _surfaceMesh.uv = surfaceMeshPart.uv;
             _surfaceMesh.RecalculateNormals();
             _surfaceMesh.RecalculateTangents();
-            
-            GetComponent<MeshFilter>().mesh = _surfaceMesh;
             
             if (boxCollider)
             {
