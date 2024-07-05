@@ -125,6 +125,9 @@ namespace Tactile.UI
 
         private void AddSurfaceToMeshFilter()
         {
+            if (!_meshFilter)
+                _meshFilter = GetComponent<MeshFilter>();
+            
             if (!_surfaceMesh)
             {
                 _surfaceMesh = new Mesh();
