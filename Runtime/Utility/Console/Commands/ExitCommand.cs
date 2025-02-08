@@ -1,4 +1,4 @@
-﻿using UnityEditor;
+﻿using UnityEngine;
 
 namespace Tactile.Utility.Console.Commands
 {
@@ -12,7 +12,7 @@ namespace Tactile.Utility.Console.Commands
         private static void Exit(ExecutionContext executedCommand)
         {
             #if UNITY_EDITOR
-            EditorApplication.ExitPlaymode();
+            UnityEditor.EditorApplication.ExitPlaymode();
             #else
             Application.Quit();
             #endif
